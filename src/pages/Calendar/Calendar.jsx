@@ -7,6 +7,7 @@ import { getRequest } from "../../service/api";
 import { setCalendar } from "../../redux/calendarSlice";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
+import { setLoader } from "../../redux/loaderSlice";
 
 const dayArray = [
   {
@@ -278,14 +279,19 @@ const Calendar = () => {
 
   const token = localStorage.getItem("token");
   const getReports = useCallback(() => {
+    dispatch(setLoader(true))
     getRequest("meetings", token)
       .then(({ data }) => {
-        toast.success("Отчеты пришол");
+        toast.success("Meetings пришол");
         dispatch(setCalendar(data.data));
+    dispatch(setLoader(false))
+
       })
       .catch((error) => {
         console.error("Xato", error);
         toast.error(error.message ? error.message : "Xatolik yuz berdi");
+    dispatch(setLoader(false))
+
       });
   }, [token, dispatch]);
 

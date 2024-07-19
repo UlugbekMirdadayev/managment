@@ -1,44 +1,60 @@
-import React, {   useEffect, useState } from "react";
+import React, {   useCallback, useEffect, useState } from "react";
 import "./User.css";
 import { deleteRequest, getRequest } from "../../service/api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import * as icon from "../../assets/svgs/index";
+import { useDispatch } from "react-redux";
+import { setLoader } from "../../redux/loaderSlice";
 
 const User = () => {
   const [users, setUsers] = useState([]);
   let token = localStorage.getItem("token");
+  const dispatch = useDispatch()
   const navigate = useNavigate();
-  const getUsers = () => {
-    getRequest("users", token)
-      .then(({ data }) => {
-        setUsers(data.data.map((i)=>
-        {
-          return {...i,arrow:false}
-        }));
-        toast.success("Ma`lumotlar keldi");
-      })
-      .catch((err) => {
-        console.error("Xaot:", err.message);
-        toast.error(err.message ? err.message : "Xatolik yuz berdi");
-      });
-  };
+  const getUsers = useCallback(
+    () => {
+      dispatch(setLoader(true))
+      getRequest("users", token)
+        .then(({ data }) => {
+          setUsers(data.data.map((i)=>
+          {
+            return {...i,arrow:false}
+          }));
+        dispatch(setLoader(false))
+          
+          toast.success("Ma`lumotlar keldi");
+        })
+        .catch((err) => {
+          console.error("Xaot:", err.message);
+          toast.error(err.message ? err.message : "Xatolik yuz berdi");
+          dispatch(setLoader(false))
+  
+        });
+    ;
+  },[token,dispatch])
   useEffect(()=>{
+    if(users.length === 0){
   getUsers()
-},[])
+    }
+},[users.length,getUsers])
   const Update = (item) => {
     localStorage.setItem("updateUser", JSON.stringify(item));
     navigate("/createUser");
   };
   const Delete = (id) => {
+     dispatch(setLoader(true))
     deleteRequest("users/" + id, token)
       .then(({ data }) => {
         console.log(data);
         toast.success("User o`chirildi");
+       dispatch(setLoader(false))
+       getUsers()
       })
       .catch((Err) => {
         console.log("error", Err);
         toast.error(Err.message ? Err.message : "Xatolik yuz berdi");
+       dispatch(setLoader(false))
       });
   };
   const hanldeArrow = (item) => {

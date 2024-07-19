@@ -4,15 +4,20 @@ import Send from "../../assets/images/send.png";
 import "./Report.css";
 import { getRequest } from "../../service/api";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setReport } from "../../redux/reportSlice";
+import { useReport } from "../../redux/useSelector";
+import { setLoader } from "../../redux/loaderSlice";
 
 const Reports = () => {
-  const [data, setData] = useState([]);
+  const report = useReport()
   const [myReport, setMyReport] = useState("");
   const [Array, setArray] = useState([
     { title: "Support", arrow: false, child: [], values: "support" },
     { title: "Project", arrow: false, child: [], values: "manager" },
     { title: "Director", arrow: false, child: [], values: "general_director" },
   ]);
+  const dispatch = useDispatch()
   const hanldeArrow = (item) => {
     const excite = Array.filter((f) => f === item)[0];
     if (excite) {
@@ -28,33 +33,37 @@ const Reports = () => {
   const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("user"));
   const getReports = useCallback(() => {
+    dispatch(setLoader(true))
     getRequest("reports", token)
       .then((reponsive) => {
         toast.success("Отчеты пришол");
-        setData(reponsive.data.data);
-        console.log(reponsive.data.data);
+        dispatch(setReport(reponsive.data.data))
+        dispatch(setLoader(false))
       })
       .catch((error) => {
         console.error("Xato", error);
         toast.error(error.message ? error.message : "Xatolik yuz berdi");
+        dispatch(setLoader(false))
       });
-  }, [token]);
+  }, [token,dispatch]);
   useEffect(() => {
-    getReports();
-  }, [getReports]);
+    if(report.length === 0){
+      getReports();
+    }
+  }, [getReports,report]);
   useEffect(() => {
     setArray((Array) =>
       Array.map((x) => {
         if (x?.child.length === 0) {
           return {
             ...x,
-            child: data.filter((f) => f.user_name.includes(x.title)),
+            child: report.filter((f) => f.user_name.includes(x.title)),
           };
         }
         return x;
       })
     );
-  }, [data]);
+  }, [report]);
   return (
     <div className="report-container">
       <nav>
@@ -97,7 +106,7 @@ const Reports = () => {
               </div>
               <div className={`wrapper-body ${item?.arrow ? "arrow1" : ""}`}>
                 <div className="body-wrap">
-                  {data?.length === 0 ? (
+                  {report?.length === 0 ? (
                     <h2 className="h2-report">Отчеты нету</h2>
                   ) : (
                     item?.child.map((i, index) => {

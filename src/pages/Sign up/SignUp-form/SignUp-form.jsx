@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUser } from "../../../redux/userSlice";
 import { post } from "../../../service/api";
+import { setLoader } from "../../../redux/loaderSlice";
 
 const SignUpForm = () => {
   const [name, setName] = useState("");
@@ -19,24 +20,19 @@ const SignUpForm = () => {
       let data = new FormData();
       data.append("email", name);
       data.append("password", password);
-
-      // let config = {
-      //   method: "post",
-      //   maxBodyLength: Infinity,
-      //   url: "https://calendar-api.fasdfasdfs.top/api/",
-      //   data: data,
-      // };
-
+      dispatch(setLoader(true))
       post("auth/login", data)
         .then(({ data }) => {
           toast.success("Login bo`ldi");
           localStorage.setItem("token", data.token);
           dispatch(setUser(data));
           navigate("/");
+      dispatch(setLoader(false))
         })
         .catch((error) => {
           console.log(error);
           toast.error(error.message ? error.message : "Xatolik yuz berdi");
+      dispatch(setLoader(false))
         });
       setError(false);
     }

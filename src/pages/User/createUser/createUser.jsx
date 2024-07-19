@@ -4,6 +4,8 @@ import "./createUser.css";
 import { postRequest } from "../../../service/api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setLoader } from "../../../redux/loaderSlice";
 
 const AddUser = () => {
   const [arrow, setArrow] = useState(false);
@@ -17,6 +19,7 @@ const AddUser = () => {
   const [error, setError] = useState(false);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const HandleCreateUser = (e) => {
     e.preventDefault();
     if (
@@ -36,6 +39,7 @@ const AddUser = () => {
       data.append("telegram", telegram);
       data.append("password", password);
       data.append("role", roles);
+    dispatch(setLoader(true))
       postRequest("users", data, token)
         .then(({ data }) => {
           console.log(data);
@@ -48,18 +52,19 @@ const AddUser = () => {
           setLogin("");
           setPassword("");
           navigate("/users");
+          toast.success("User yaratildi")
+      dispatch(setLoader(false))
         })
         .catch((err) => {
           console.log(err);
           toast.error(err.message ? err.message : "Xatolik yuz berdi");
+      dispatch(setLoader(false))
         });
       setError(false);
     }
   };
   let updateUser = JSON.parse(localStorage.getItem("updateUser"));
-  console.log(roles);
   useEffect(() => {
-    console.log(updateUser);
     if (updateUser) {
       setName(updateUser?.name.split(" ")[1]);
       setLastName(updateUser?.name.split(" ")[0]);
@@ -87,6 +92,7 @@ const AddUser = () => {
       data.append("telegram", telegram);
       data.append("password", password);
       data.append("role", roles);
+      dispatch(setLoader(true))
       postRequest("userUpdate/" + updateUser.id, data, token)
         .then(({ data }) => {
           console.log(data);
@@ -100,9 +106,11 @@ const AddUser = () => {
           setPassword("");
           navigate("/users");
           localStorage.removeItem("updateUser");
+         dispatch(setLoader(false))
         })
         .catch((err) => {
           console.log(err);
+      dispatch(setLoader(false))
         });
       setError(false);
     }
@@ -249,7 +257,7 @@ const AddUser = () => {
           </label>
           <br />
           <input
-            type="text"
+            type='email'
             id="login"
             value={login}
             onChange={(e) => setLogin(e.target.value)}

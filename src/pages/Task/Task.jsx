@@ -3,9 +3,13 @@ import * as icon from "../../assets/svgs/index";
 import "./Task.css";
 import { getRequest } from "../../service/api";
 import { toast } from "react-toastify";
+import { useTask } from "../../redux/useSelector";
+import { useDispatch } from "react-redux";
+import { setTask } from "../../redux/taskSlice";
+import { setLoader } from "../../redux/loaderSlice";
 
 const Task = () => {
-  const [task,setTask] = useState([])
+  const task = useTask()
   const [Array,setArray] = useState([{
     title: "делать",
     children: [
@@ -23,42 +27,57 @@ const Task = () => {
   },
   {
     title: "сделно",
-    children:task,
+    children:[],
   },])
   const [select, setSelect] = useState("Все");
   const FakeData = Array.filter((f) =>
     select === "Все" ? Array : f?.title === select
   );
   const token = localStorage.getItem("token")
+  const dispatch = useDispatch()
   const getTask = useCallback(() => {
+    dispatch(setLoader(true))
     getRequest("tasks",token)
     .then(({data})=>{
      toast.success("Tasklar keldi")
-     setTask(data.data)
+     dispatch(setTask(data.data))
+     dispatch(setLoader(false))
     }).catch((err)=>{
       console.log(err);
       toast.error(err.message ? err.message : "Xatlik yuz berdi")
+      dispatch(setLoader(false))
+
     })
   },[token])
   useEffect(()=>{
-    getTask()
-  },[getTask])
+    if(task?.length === 0){
+      getTask()
+    }
+  },[getTask,task])
   useEffect(()=>{
-    setArray(Array.map((x)=>{
-      if(x.children.length === 0){
-        return {...x,children:task.filter((f)=>f.status === x.title)}
-      }
-    }))
+   setArray(Array.map((x)=>{
+    return {...x,children:task?.filter((f)=>f.status === x.title)}
+  }));
   },[task])
+  useEffect(() => {
+    if (localStorage.getItem("select")) {
+      setSelect(localStorage.getItem("select"));
+    } else {
+      setSelect(select);
+    }
+  }, [select, setSelect]);
 
   return (
     <div className="task-container">
       <nav>
-        <select name="name" id="id" onChange={(e) => setSelect(e.target.value)}>
+        <select name="name" id="id" onChange={(e) => {
+          setSelect(e.target.value);
+          localStorage.setItem("select",select)
+        }}>
           <option value="Все">Все</option>
           {Array.map((i, index) => (
-            <option value={i.title} key={index}>
-              {i.title}
+            <option value={i?.title} key={index}>
+              {i?.title}
             </option>
           ))}
         </select>
@@ -66,11 +85,11 @@ const Task = () => {
       <div className="tasks-wrapper">
         {FakeData.map((item) => {
           return (
-            <div className={`task-column ${item.title}`} key={item.title}>
+            <div className={`task-column ${item?.title}`} key={item?.title}>
               <h1 className="task-column-title">
-                <span>{item.children.length}</span> {item.title}
+                <span>{item?.children?.length}</span> {item?.title}
               </h1>
-              {item.children.map((i, index) => {
+              {item?.children?.map((i, index) => {
                 return (
                   <div
                     className={`task-card ${
