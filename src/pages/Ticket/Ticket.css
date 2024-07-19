@@ -1,0 +1,178 @@
+.ticket-container {
+  padding: 50px;
+  border: 1px solid #dee1e6;
+}
+.ticket-container nav ul {
+  display: flex;
+  align-items: center;
+}
+.ticket-container nav ul li {
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  text-align: center;
+  color: #6e7787;
+  width: 115px;
+  cursor: pointer;
+  position: relative;
+}
+
+.ticket-container nav ul li button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+.ticket-container nav ul .li-active button {
+  color: black !important;
+  font-weight: 700 !important;
+}
+.ticket-container nav ul .li-active::before {
+  content: "";
+  position: absolute;
+  width: 100% !important;
+  height: 4px;
+  background-color: black;
+  top: 30px;
+  left: 0;
+}
+.ticket-container table {
+  width: 1097px;
+  height: 446px;
+  margin-top: 10px;
+}
+
+.ticket-container table thead tr,
+table tbody tr {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  margin-top: 15px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #dee1e6;
+}
+.ticket-container table thead tr th {
+  font-family: Outfit, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+  color: #171a1f;
+  width: 168px;
+  text-align: left !important;
+}
+
+.ticket-container table tbody tr td {
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  color: #171a1f;
+  text-align: left !important;
+  width: 160px !important;
+  width: 175px;
+}
+.ticket-container table tbody tr .nameTicket {
+  font-family: Outfit, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+  color: #171a1f;
+}
+
+.ticket-container table tbody tr .status button {
+  width: 60px;
+  height: 24px;
+  font-family: Lato, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 15px;
+  border: none;
+}
+
+.ticket-container table tbody tr .Закрыт button {
+  color: white;
+  background-color: #de3b40;
+}
+.ticket-container table tbody tr .Открыты button {
+  background-color: #1dd75b;
+}
+.ticket-container table tbody tr .Новый button {
+  background-color: #efb034;
+}
+
+.table-mobile {
+  display: none;
+}
+
+@media screen and (max-width: 500px) {
+  
+  .ticket-container {
+    padding: 0px;
+  }
+  .ticket-container nav {
+    width: 100%;
+  }
+  .ticket-container nav ul li {
+    width: 75px !important;
+    height: 52px !important;
+  }
+  .ticket-container table {
+    width: 340px;
+    height: 100%;
+  }
+  .table-desktop {
+    display: none;
+  }
+  .table-mobile {
+    display: block;
+    width: 100%;
+  }
+  .table-mobile tbody .tr {
+    width: 340px !important;
+    height: 61px !important;
+    display: grid;
+    grid-template-columns: 1fr;
+    border: 1px solid #dee1e6;
+  }
+  .table-mobile tbody .active-arrow-table {
+    height: 100% !important;
+  }
+  .active-arrow-tr {
+    display: flex !important;
+  }
+  .table-mobile-td {
+    display: none;
+  }
+  .table-mobile tbody .tr tr {
+    padding-left: 15px;
+  }
+  .table-mobile tbody .tr tr th {
+    font-family: Outfit, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 22px;
+    text-align: left;
+  }
+  .table-mobile tbody .tr tr td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .table-mobile tbody .tr tr td .td-btn {
+    width: 36px;
+    height: 36px;
+    background-color: #535ce8;
+    border: none;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+  }
+}

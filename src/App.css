@@ -1,0 +1,47 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+  /* border: 1px solid black; */
+}
+
+.App {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  transition: all 0.5s;
+}
+
+.activeApp {
+  opacity: 0.5;
+}
+
+.Modal-container {
+  width: 592px;
+  height: 100vh;
+  box-shadow: 0px 0px 1px 0px #171a1f26;
+  box-shadow: 0px 0px 2px 0px #171a1f33;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: white;
+  display: none;
+}
+.Modal-container.active {
+  display: block;
+}
+
+@media screen and (max-width: 500px) {
+  .Modal-container {
+    width: 340px;
+    height: 100vh;
+    border-radius: 15px;
+    left: 25px;
+    padding: 0px;
+    top: 5px;
+    position: fixed !important;
+    overflow: auto;
+  }
+}

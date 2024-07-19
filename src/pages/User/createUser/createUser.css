@@ -1,0 +1,130 @@
+.createUser {
+  padding: 30px;
+}
+.createUser h1 {
+  font-family: Inter, sans-serif;
+  font-weight: 700;
+  text-align: left;
+  color: #323842;
+}
+.createUser h1:nth-child(1) {
+  font-size: 32px;
+}
+
+.createUser form {
+  width: 928px;
+  padding: 24px 32px 25px 32px;
+  border: 1px solid #f3f4f6;
+}
+.createUser form h1 {
+  font-size: 18px !important;
+}
+
+.createUser form .form-input-container {
+  width: 100%;
+  margin-top: 15px;
+}
+.createUser form .form-input-container label {
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: left;
+  color: #424955;
+}
+
+.createUser form .form-input-container input {
+  width: 863px;
+  height: 35px;
+  background-color: #f3f4f6;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  padding-left: 10px;
+}
+.createUser form .form-input-container input.error {
+  border: 1px solid red;
+  color: red;
+}
+.createUser form .form-input-container input.error::placeholder {
+  color: red;
+}
+.createUser form .form-input-container label.error {
+  color: red;
+}
+
+.createUser form .input-drop {
+  width: 863px;
+  height: 50px;
+  background-color: #f3f4f6;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+}
+.input-drop-active {
+  height: 155px !important;
+}
+.drop-input-active {
+  display: block !important;
+}
+
+.createUser form .input-drop .input {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 5px;
+  display: none;
+}
+.createUser form .input-drop .input:nth-child(1) {
+  display: flex;
+}
+.createUser form .input-drop .input {
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  text-align: left;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+.form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.form-footer .form-actions button {
+  width: 210px;
+  height: 40px;
+  text-align: left;
+  padding-left: 15px;
+  margin-top: 5px;
+  border: none;
+  cursor: pointer;
+  background-color: #535ce8 !important;
+
+  color: white;
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 5px;
+}
+
+@media screen and (max-width: 500px) {
+  .createUser {
+    padding: 0;
+  }
+  .createUser form {
+    width: 350px;
+  }
+
+  .createUser form .form-input-container input {
+    width: 300px;
+    height: 35px;
+  }
+  .createUser form .input-drop {
+    width: 300px;
+  }
+}

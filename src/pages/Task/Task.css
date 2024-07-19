@@ -1,0 +1,216 @@
+.task-container {
+  border: 1px solid #dee1e6;
+}
+.task-container nav {
+  height: 70px !important;
+}
+.task-container nav select {
+  width: 130px !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 32px;
+  background-color: #f1f2fd;
+  font-family: Lato, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #535ce8;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  outline: none;
+  margin-left: 15px;
+}
+
+.tasks-wrapper {
+  width: 1200px !important;
+  height: 73vh;
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  gap: 30px;
+  overflow: auto;
+}
+.tasks-wrapper .task-column {
+  width: 324px;
+  height: 100%;
+  background-color: #f8f9fa;
+  border: 1px solid #f3f4f6;
+  padding: 20px;
+}
+.tasks-wrapper .task-column h1 {
+  font-family: Lato, sans-serif;
+  font-size: 25px !important;
+  font-weight: 400;
+  line-height: 30px;
+}
+.tasks-wrapper .task-column-title span {
+  width: 30px;
+  height: 30px;
+  padding: 3px 10px 4px 10px;
+  margin-right: 3px;
+  border-radius: 50%;
+}
+.tasks-wrapper .делать .task-column-title span {
+  background-color: #379ae6;
+  color: white;
+}
+.tasks-wrapper .делать .task-column-title {
+  color: #379ae6;
+}
+.tasks-wrapper .task-card {
+  width: 291px;
+  height: 179px;
+  background-color: #ffffff;
+  display: flex;
+  margin-top: 25px;
+  border-radius: 5px;
+}
+.tasks-wrapper .task-card .card-right .card-right-head,
+.card-right-body {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  margin-bottom: 10px;
+}
+
+.tasks-wrapper .task-card .card-hr {
+  width: 7.01px;
+  height: 100%;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border: none;
+}
+
+.tasks-wrapper .task-card .card-right {
+  margin-left: 12px;
+  width: 89% !important;
+}
+.tasks-wrapper .task-card .card-right .card-right-head h2 {
+  font-family: Lato, sans-serif;
+  font-size: 18px !important;
+  font-weight: 700;
+  line-height: 26.3px;
+  text-align: left;
+}
+.tasks-wrapper .task-card .card-right .card-right-head p {
+  font-family: Lato, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.tasks-wrapper .task-card .card-right .card-right-body p {
+  display: flex;
+  align-items: center;
+  font-family: Lato, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 19.28px;
+  text-align: left;
+  color: #565e6c;
+}
+.tasks-wrapper .task-card .card-right .card-right-body button {
+  background-color: transparent;
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+  border: none;
+}
+.tasks-wrapper .task-card .card-right .card-right-footer {
+  margin-top: 15px;
+}
+.tasks-wrapper .task-card .card-right .card-right-footer p {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-top: 10px;
+  font-family: Lato, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+}
+.tasks-wrapper .task-card .card-right .card-right-footer p span {
+  font-family: Lato, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 19.28px;
+  text-align: left;
+}
+.tasks-wrapper .task-card-red .card-hr {
+  background-color: #fe763e;
+}
+.tasks-wrapper .task-card-red .card-right .card-right-head h2 {
+  color: #f84b01;
+}
+.tasks-wrapper .task-card-red .card-right .card-right-head p {
+  color: #f84b01;
+}
+.tasks-wrapper .task-card .card-right .card-right-footer p span {
+  color: #379ae6;
+}
+.tasks-wrapper .task-card-yellow .card-hr {
+  background-color: #f1c932;
+}
+.tasks-wrapper .task-card-yellow .card-right .card-right-head h2 {
+  color: #f1c932;
+}
+
+.tasks-wrapper .task-card-yellow .card-right .card-right-head p {
+  color: #f1c932;
+}
+.tasks-wrapper .task-card-red .card-right .card-right-head,
+.card-right-body {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between !important;
+  margin-top: 12px;
+  margin-bottom: 10px;
+}
+.tasks-wrapper .task-card-red .card-right hr {
+  margin-top: 20px;
+}
+
+.tasks-wrapper .выполнения .task-column-title span {
+  background-color: #efb034;
+  color: white;
+}
+.tasks-wrapper .выполнения .task-column-title {
+  color: #efb034;
+}
+
+.tasks-wrapper .выполненно .task-column-title span {
+  background-color: #f13232;
+  color: white;
+}
+.tasks-wrapper .выполненно .task-column-title {
+  color: #f13232;
+}
+
+.tasks-wrapper .сделно .task-column-title span {
+  background-color: #1dd75b;
+  color: white;
+}
+.tasks-wrapper .сделно .task-column-title {
+  color: #1dd75b;
+}
+
+@media screen and (max-width: 500px) {
+  .tasks-wrapper {
+    display: block;
+    width: 370px !important;
+    height: 73vh !important;
+    margin-top: 15px;
+  }
+  .tasks-wrapper .task-column {
+    width: 400px;
+    height: 100vh;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    flex-direction: column;
+  }
+}

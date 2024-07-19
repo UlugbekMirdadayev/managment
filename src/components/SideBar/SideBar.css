@@ -1,0 +1,155 @@
+.sidebar {
+  width: 250px;
+  height: 98.5vh;
+  padding: 80px 20px 0 30px;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  flex-direction: column;
+  background-color: #fafafb;
+}
+.sidebar ul {
+  width: 210px;
+}
+.sidebar ul .li {
+  margin-top: 20px;
+  display: flex !important;
+  align-items: center;
+  width: 210px;
+  height: 40px;
+  padding: 8px 16px 8px 16px;
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  gap: 15px;
+  color: #565e6c;
+  cursor: pointer;
+}
+
+.sidebar ul li.active {
+  background-color: #535ce8;
+  color: white;
+  display: flex;
+  align-items: center;
+  width: 210px;
+  height: 40px;
+  padding: 8px 16px 8px 16px;
+  gap: 15px;
+  margin-top: 20px;
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.sidebar ul .li button {
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  gap: 15px;
+  color: #565e6c;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.user-list {
+  height: 150px;
+  width: 100%;
+}
+
+.user-list .title {
+  margin-top: 20px;
+  display: flex !important;
+  align-items: center;
+  width: 210px;
+  height: 40px;
+  padding: 8px 16px 8px 16px;
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  gap: 15px;
+  color: #565e6c;
+  cursor: pointer;
+}
+
+.user-list ul {
+  height: 0px !important;
+  border-left: 1px solid #565e6c33;
+  display: none;
+}
+.user-list ul.active {
+  height: 100px !important;
+  border-left: 2px solid #565e6c33;
+  display: block;
+}
+.user-list ul li {
+  display: flex !important;
+  align-items: center;
+width: 200px !important;
+  height: 40px;
+  padding: 8px 16px 8px 16px;
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  gap: 15px;
+  color: #565e6c;
+  cursor: pointer;
+  margin-left: 15px;
+}
+.sidebar-user {
+  display: none;
+  height: 80px !important;
+}
+
+.sidebar-user h3 {
+  font-family: Lato, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: left;
+  color: #323842;
+}
+.sidebar-user h3 span {
+  font-family: Lato, sans-serif;
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: left;
+  color: #9095a0;
+  margin-right: 20px;
+}
+
+@media screen and (max-width: 500px) {
+  .sidebar {
+    width: 100% !important;
+    position: absolute;
+    z-index: 1;
+    padding:15px 20px 20px 30px;
+    left: -150%;
+    transition: all 0.4s;
+  }
+  .active-sidebar {
+    left: 0;
+  }
+  .sidebar ul {
+    height: 70vh;
+  }
+  .sidebar ul li {
+    width: 300px !important;
+  }
+  .sidebar-user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+  }
+  .sidebar-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 300px;
+  }
+
+}

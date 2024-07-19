@@ -1,0 +1,96 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Outfit:wght@100..900&display=swap");
+
+.SignUp-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.SignUp-container form {
+  width: 558px;
+  height: 656px;
+  border-radius: 8px 0px 0px 0px;
+  box-shadow: 0px 8px 17px 0px #171a1f3b;
+  padding: 80px;
+  background-color: white;
+}
+.SignUp-container form h1 {
+  font-family: Outfit, sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 48px;
+  text-align: center;
+}
+.SignUp-container form .input-container {
+  margin-top: 35px;
+  width: 429px;
+}
+.SignUp-container form .input-container:nth-child(2) {
+  margin-top: 80px !important;
+}
+.SignUp-container form .input-container label {
+  font-family: Lato, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 26px;
+  text-align: left;
+  color: #424955;
+}
+
+.SignUp-container form .input-container input {
+  width: 100%;
+  height: 43px;
+  padding-left: 15px;
+  border-radius: 5px;
+  background-color: #f3f4f6 !important;
+  border: none;
+  outline: none;
+  color: #424955;
+}
+.SignUp-container form .input-container input::placeholder {
+  color: #bcc1ca;
+}
+
+.SignUp-container form button {
+  width: 430px;
+  height: 44px;
+  padding: 9px 0px 9px 0px;
+  background-color: #535ce8;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-family: Lato, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 60px;
+}
+.SignUp-container input.error {
+  border: 1px solid red !important;
+}
+.SignUp-container input.error::placeholder {
+  color: red !important;
+}
+.SignUp-container label.error {
+  color: red !important;
+}
+
+@media screen and (max-width: 500px) {
+  .SignUp-container form {
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .SignUp-container form h1 {
+    margin-left: 15px;
+  }
+  .SignUp-container form .input-container {
+    width: 309px;
+  }
+  .SignUp-container form button {
+    width: 309px;
+    height: 44px;
+    padding: 9px 0px 9px 0px;
+  }
+}
