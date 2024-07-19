@@ -3,6 +3,10 @@
 }
 .task-container nav {
   height: 70px !important;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 .task-container nav select {
   width: 130px !important;
@@ -19,25 +23,21 @@
   border-radius: 5px;
   padding: 5px;
   cursor: pointer;
-  margin-top: 15px;
   outline: none;
-  margin-left: 15px;
 }
 
 .tasks-wrapper {
   width: 1200px !important;
-  height: 73vh;
+  height: 74vh !important;
   display: flex;
   align-items: center;
   margin-top: 15px;
   gap: 30px;
-  overflow: auto;
+  overflow: auto !important;
 }
 .tasks-wrapper .task-column {
   width: 324px;
-  height: 100%;
-  background-color: #f8f9fa;
-  border: 1px solid #f3f4f6;
+  height: 100% !important;
   padding: 20px;
 }
 .tasks-wrapper .task-column h1 {
@@ -53,11 +53,11 @@
   margin-right: 3px;
   border-radius: 50%;
 }
-.tasks-wrapper .делать .task-column-title span {
+.tasks-wrapper .Делать .task-column-title span {
   background-color: #379ae6;
   color: white;
 }
-.tasks-wrapper .делать .task-column-title {
+.tasks-wrapper .Делать .task-column-title {
   color: #379ae6;
 }
 .tasks-wrapper .task-card {

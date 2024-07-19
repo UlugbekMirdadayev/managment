@@ -4,10 +4,15 @@ import { useLocation } from "react-router-dom";
 import { deletePlus, extraListHead, listHaed } from "../../utils/data";
 import { Plus } from "../../assets/svgs";
 import User from "../../assets/images/Avatar.png";
+import { useModal } from "../../redux/useSelector";
+import { useDispatch } from "react-redux";
+import { setModal } from "../../redux/modalSlice";
 
-const Navbar = ({ modal, setModal, setsideBar, bar, setBar }) => {
+const Navbar = ({setsideBar, bar, setBar }) => {
   const { pathname } = useLocation();
   const user = JSON.parse(localStorage.getItem("user"));
+  const dispatch = useDispatch()
+  const modal = useModal()
   return (
     <header className="nav-conatiner">
       <nav>
@@ -20,7 +25,7 @@ const Navbar = ({ modal, setModal, setsideBar, bar, setBar }) => {
                 setsideBar(true);
               }}
             >
-              <div className="bar  line1"></div>
+              <div className="bar line1"></div>
               <div className="bar line2"></div>
               <div className="bar line3"></div>
             </div>
@@ -36,7 +41,7 @@ const Navbar = ({ modal, setModal, setsideBar, bar, setBar }) => {
                 ? "delete-btn"
                 : "btn"
             }`}
-            onClick={() => setModal(!modal)}
+            onClick={() => dispatch(setModal(true))}
             style={{
               display:
                 deletePlus.filter((f) => f === pathname)[0] === pathname
@@ -50,7 +55,7 @@ const Navbar = ({ modal, setModal, setsideBar, bar, setBar }) => {
         </div>
         <div className="nav-right">
           <button
-            onClick={() => setModal(!modal)}
+             onClick={() => dispatch(setModal(true))}
             style={{
               display:
                 deletePlus.filter((f) => f === pathname)[0] === pathname

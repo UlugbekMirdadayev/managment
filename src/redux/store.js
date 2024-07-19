@@ -4,6 +4,8 @@ import calendar from "./calendarSlice";
 import report from "./reportSlice";
 import loader from "./loaderSlice";
 import task from "./taskSlice";
+import update from "./updateSlice";
+import modal from "./modalSlice";
 
 export default configureStore({
   reducer: {
@@ -12,5 +14,7 @@ export default configureStore({
     report,
     loader,
     task,
+    update,
+    modal, 
   },
 });

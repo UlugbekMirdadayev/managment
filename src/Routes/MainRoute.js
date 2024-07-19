@@ -4,13 +4,17 @@ import Navbar from "../components/Navbar/Navbar";
 import Modal from "../components/Modal/Modal";
 import { modals, routes } from "../utils/data";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { useModal } from "../redux/useSelector";
+import { useDispatch } from "react-redux";
+import {setModal}  from "../redux/modalSlice"
 
 const MainRoute = () => {
   const { pathname } = useLocation();
-  const [modal, setModal] = useState(false);
   const ModalData = modals.filter((f) => f.path === pathname);
   const [sideBar, setsideBar] = useState(false);
   const [bar, setBar] = useState(false);
+  const dispatch = useDispatch()
+  const modal = useModal()
 
   return (
     <>
@@ -20,7 +24,7 @@ const MainRoute = () => {
         }`}
         onClick={() => {
           if (modal) {
-            setModal(false);
+            dispatch(setModal(false));
           }
         }}
       >
@@ -32,8 +36,6 @@ const MainRoute = () => {
         />
         <div style={{ flex: 1 }}>
           <Navbar
-            modal={modal}
-            setModal={setModal}
             setsideBar={setsideBar}
             sideBar={sideBar}
             bar={bar}
@@ -52,7 +54,7 @@ const MainRoute = () => {
           </Routes>
         </div>
       </div>
-      <Modal modal={modal} setModal={setModal} />
+      <Modal/>
     </>
   );
 };

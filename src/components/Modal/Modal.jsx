@@ -1,15 +1,20 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { modals } from "../../utils/data";
+import { useModal } from "../../redux/useSelector";
+import { useDispatch } from "react-redux";
+import { setModal } from "../../redux/modalSlice";
 
-const Modal = ({ modal, setModal }) => {
+const Modal = () => {
   const { pathname } = useLocation();
   const ModalData = modals.filter((f) => f.path === pathname);
+  const modal = useModal()
+  const dispatch = useDispatch()
   useEffect(()=>{
     if(ModalData.length === 0){
-       setModal(false)
+       dispatch(setModal(false))
     }
-  },[ModalData,setModal])
+  },[ModalData.length,dispatch])
   return (
     <div
       className={`Modal-container ${
@@ -17,7 +22,7 @@ const Modal = ({ modal, setModal }) => {
       }`}
     >
       {ModalData.map((item, index) => (
-        <item.component modal={modal} setModal={setModal} key={index} />
+        <item.component key={index} />
       ))}
     </div>
   );

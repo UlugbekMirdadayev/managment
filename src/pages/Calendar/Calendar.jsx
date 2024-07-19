@@ -343,57 +343,7 @@ const Calendar = () => {
           </button>
         </div>
       </nav>
-      {/* <table className="table-calendar">
-        <tbody>
-            {
-              dayArray.map((item,index)=>{
-                return <tr  key={index}>
-                  <td className="td-time">{item.time}</td>
-                  <td className="td-input">{item.data.description === ""?"":item.data.description}</td>
-                </tr>
-              })
-            }
-        </tbody>
-      </table>
-        <div className="table-calendar">
-          <div className="tabel-head">
-               <h1></h1>
-              {weekArray[0].children.map((item,index)=>{
-                return <h1 key={index}> <span className={item.day === moment().date().toString() ? "active":""}>{item.day}</span> <br /> {item.title}</h1>
-              })}
-          </div>
-          <div className="tabel-body">
-          {
-              weekArray[1].children.map((item,index)=>{
-                return <div className="tr" key={index}>
-                  <td className="td-time">{item.time}</td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                </div>
-              })
-            }
-          </div>
-        </div>
-        <div className="table-calendar2">
-          <div className="table-calendar2-head">
-            {weekArray[0].children.map((item,index)=>{
-              return <h1 key={index} className={item.day === moment().date().toString() ? "active" : ""}>{item.title}</h1>
-            })}
-          </div>
-          <div className="table-calendar2-body">
-            {monthArray.map((item,index)=>{
-              return <div key={index} className="body-card">
-                <h1>{item.date}</h1>
-                <div className={item.data[index]?.description ? "description":""}><p><span>{item.data[index]?.time}</span>{item.data[index]?.description}</p></div>
-              </div>
-            })}
-          </div>
-        </div> */}
+     
       {arrowActive === "day" ? (
         <table className="table-calendar">
           <tbody>
@@ -484,8 +434,62 @@ const Calendar = () => {
           </div>
         </div>
       ) : null}
+       {/* <table className="table-calendar">
+        <tbody>
+            {
+              dayArray.map((item,index)=>{
+                return <tr  key={index}>
+                  <td className="td-time">{item.time}</td>
+                  <td className="td-input">{item.data.description === ""?"":item.data.description}</td>
+                </tr>
+              })
+            }
+        </tbody>
+      </table>
+        <div className="table-calendar">
+          <div className="tabel-head">
+               <h1></h1>
+              {weekArray[0].children.map((item,index)=>{
+                return <h1 key={index}> <span className={item.day === moment().date().toString() ? "active":""}>{item.day}</span> <br /> {item.title}</h1>
+              })}
+          </div>
+          <div className="tabel-body">
+          {
+              weekArray[1].children.map((item,index)=>{
+                return <div className="tr" key={index}>
+                  <td className="td-time">{item.time}</td>
+                  <td className="td-input"></td>
+                  <td className="td-input"></td>
+                  <td className="td-input"></td>
+                  <td className="td-input"></td>
+                  <td className="td-input"></td>
+                  <td className="td-input"></td>
+                  <td className="td-input"></td>
+                </div>
+              })
+            }
+          </div>
+        </div>
+        <div className="table-calendar2">
+          <div className="table-calendar2-head">
+            {weekArray[0].children.map((item,index)=>{
+              return <h1 key={index} className={item.day === moment().date().toString() ? "active" : ""}>{item.title}</h1>
+            })}
+          </div>
+          <div className="table-calendar2-body">
+            {monthArray.map((item,index)=>{
+              return <div key={index} className="body-card">
+                <h1>{item.date}</h1>
+                <div className={item.data[index]?.description ? "description":""}><p><span>{item.data[index]?.time}</span>{item.data[index]?.description}</p></div>
+              </div>
+            })}
+          </div>
+        </div> */}
     </div>
+    
   );
 };
 
 export default Calendar;
+
+

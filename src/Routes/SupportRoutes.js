@@ -29,7 +29,7 @@ const SupportRoute = () => {
           setsideBar={setsideBar}
           setBar={setBar}
         />
-        <div>
+        <div  style={{ flex: 1 }}>
           <Navbar modal={modal} setModal={setModal} setBar={setBar} bar={bar} setsideBar={setsideBar} />
           <Routes>
             {routes.map((item) => {

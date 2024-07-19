@@ -3,15 +3,21 @@ import * as icon from "../../assets/svgs/index";
 import "./Task.css";
 import { getRequest } from "../../service/api";
 import { toast } from "react-toastify";
-import { useTask } from "../../redux/useSelector";
+import { useModal, useTask } from "../../redux/useSelector";
 import { useDispatch } from "react-redux";
 import { setTask } from "../../redux/taskSlice";
 import { setLoader } from "../../redux/loaderSlice";
+import { updateTask } from "../../redux/updateSlice";
+import { setModal } from "../../redux/modalSlice";
 
 const Task = () => {
   const task = useTask()
-  const [Array,setArray] = useState([{
-    title: "делать",
+  const [Array,setArray] = useState([
+    {
+      title: "Все",
+    },
+    {
+    title: "Делать",
     children: [
     ],
   },
@@ -21,7 +27,7 @@ const Task = () => {
     ],
   },
   {
-    title: "не выполненно",
+    title: "Не выполненно",
     children: [
     ],
   },
@@ -31,8 +37,9 @@ const Task = () => {
   },])
   const [select, setSelect] = useState("Все");
   const FakeData = Array.filter((f) =>
-    select === "Все" ? Array : f?.title === select
+    select === "Все" ? Array : f.title === select
   );
+  const modal = useModal()
   const token = localStorage.getItem("token")
   const dispatch = useDispatch()
   const getTask = useCallback(() => {
@@ -42,13 +49,14 @@ const Task = () => {
      toast.success("Tasklar keldi")
      dispatch(setTask(data.data))
      dispatch(setLoader(false))
+     console.log(data);
     }).catch((err)=>{
       console.log(err);
       toast.error(err.message ? err.message : "Xatlik yuz berdi")
       dispatch(setLoader(false))
 
     })
-  },[token])
+  },[token,dispatch])
   useEffect(()=>{
     if(task?.length === 0){
       getTask()
@@ -58,7 +66,7 @@ const Task = () => {
    setArray(Array.map((x)=>{
     return {...x,children:task?.filter((f)=>f.status === x.title)}
   }));
-  },[task])
+  },[task,setArray])
   useEffect(() => {
     if (localStorage.getItem("select")) {
       setSelect(localStorage.getItem("select"));
@@ -66,26 +74,32 @@ const Task = () => {
       setSelect(select);
     }
   }, [select, setSelect]);
+  const Select = (e)=> {
+    setSelect(e.target.value)
+    localStorage.setItem("select",e.target.value)
+  }
+  const Update = (item)=>{
 
+    dispatch(updateTask(item))
+    dispatch(setModal(true))
+  }
   return (
     <div className="task-container">
       <nav>
-        <select name="name" id="id" onChange={(e) => {
-          setSelect(e.target.value);
-          localStorage.setItem("select",select)
-        }}>
-          <option value="Все">Все</option>
+        <select name="name" id="id" onChange={Select}>
+          <option value={select}>{select}</option>
           {Array.map((i, index) => (
-            <option value={i?.title} key={index}>
+            <option value={i?.title} key={index} style={{display:select === i.title ? "none":"block"}}>
               {i?.title}
             </option>
           ))}
         </select>
+        <button onClick={() => getTask()} className="refresh-btn">refresh</button>
       </nav>
       <div className="tasks-wrapper">
         {FakeData.map((item) => {
           return (
-            <div className={`task-column ${item?.title}`} key={item?.title}>
+            <div className={`task-column ${item?.title}`} key={item?.title} style={{display:item.title === "Все"?"none":""}}>
               <h1 className="task-column-title">
                 <span>{item?.children?.length}</span> {item?.title}
               </h1>
@@ -93,7 +107,7 @@ const Task = () => {
                 return (
                   <div
                     className={`task-card ${
-                      i.level === "высокий"
+                      i.level === "Высокий"
                         ? "task-card-red "
                         : "task-card-yellow"
                     }`}
@@ -110,7 +124,7 @@ const Task = () => {
                           <icon.Clock />
                           {i.end_date}
                         </p>
-                        <button>
+                        <button onClick={()=>Update(i)}>
                           <icon.Pen />
                         </button>
                       </div>

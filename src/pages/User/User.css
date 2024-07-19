@@ -3,15 +3,7 @@
   width: 1250px !important;
   position: relative;
 }
-.refresh-btn {
-  background-color: #535ce8;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  color: white;
-  border-radius: 5px;
-  margin-top: 10px;
-}
+
 .User-container h1 {
   font-family: Inter, sans-serif;
   font-size: 18px;

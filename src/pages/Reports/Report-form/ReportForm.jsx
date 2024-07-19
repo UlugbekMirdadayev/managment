@@ -1,12 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as icon from "../../../assets/svgs/index";
 import { useUser } from "../../../redux/useSelector";
 import "./ReportForm.css";
 import { status_users } from "../../../utils/data";
 import { postRequest } from "../../../service/api";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setModal } from "../../../redux/modalSlice";
+import { setLoader } from "../../../redux/loaderSlice";
 
-const ReportForm = ({ modal, setModal }) => {
+const ReportForm = () => {
   const [type, setType] = useState("Ежедневный");
   const [report, setReport] = useState("");
   const [description, setDescription] = useState("");
@@ -18,9 +21,24 @@ const ReportForm = ({ modal, setModal }) => {
 
   const statusRef = useRef(null);
 
-  const user = useUser();
+  const dispatch = useDispatch()
   const token = localStorage.getItem("token");
-
+  const user = JSON.parse(localStorage.getItem("user"));
+  const getReports = useCallback(() => {
+    dispatch(setLoader(true))
+    getReports("reports", token)
+      .then((reponsive) => {
+        toast.success("Отчеты пришол");
+        dispatch(setReport(reponsive.data.data))
+        dispatch(setLoader(false))
+        console.log(reponsive.data.data);
+      })
+      .catch((error) => {
+        console.error("Xato", error);
+        toast.error(error.message ? error.message : "Xatolik yuz berdi");
+        dispatch(setLoader(false))
+      });
+  }, [token,dispatch]);
   const handleReport = () => {
     if (status_users.filter((f) => f === user?.user?.roles[0]?.name)[0]) {
       if (
@@ -53,7 +71,8 @@ const ReportForm = ({ modal, setModal }) => {
             setStatus("");
             setComments("");
             setFile(null);
-            setModal(false);
+            dispatch(setModal(false))
+            getReports()
           })
           .catch((err) => {
             console.log(err);
@@ -109,7 +128,7 @@ const ReportForm = ({ modal, setModal }) => {
     <div className="ReportForm-container">
       <div className="ReportForm-head">
         <h1>Создать Отчеты</h1>
-        <button onClick={() => setModal(!modal)}>
+        <button onClick={() =>dispatch(setModal(false))}>
           <icon.Close />
         </button>
       </div>

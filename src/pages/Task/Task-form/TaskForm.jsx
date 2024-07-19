@@ -1,19 +1,42 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import * as icon from "../../../assets/svgs/index";
 import "./TaskForm.css";
 import { toast } from "react-toastify";
-import { postRequest } from "../../../service/api";
+import { getRequest, postRequest } from "../../../service/api";
+import { useDispatch } from "react-redux";
+import { setLoader } from "../../../redux/loaderSlice";
+import { setModal } from "../../../redux/modalSlice";
+import { created_by } from "../../../utils/data";
+import { useModal } from "../../../redux/useSelector";
+import { setTask } from "../../../redux/taskSlice";
 
-const TaskForm = ({ modal, setModal }) => {
+const TaskForm = () => {
   const [name, setName] = useState("");
-  const [level, setLevel] = useState("");
+  const [level, setLevel] = useState("Высокий");
   const [status, setStatus] = useState("");
   const [startDate, setStartDate] = useState("");
   const [finishDate, setFinishDate] = useState("");
   const [file, setFile] = useState(null);
   const [forward, setForward] = useState("");
+  const [describe,setDiscribe] = useState("")
   const [error, setError] = useState(false);
   const token = localStorage.getItem("token")
+  const modal = useModal()
+  const dispatch = useDispatch()
+  const getTask = useCallback(() => {
+    dispatch(setLoader(true))
+    getRequest("tasks",token)
+    .then(({data})=>{
+     toast.success("Tasklar keldi")
+     dispatch(setTask(data.data))
+     dispatch(setLoader(false))
+    }).catch((err)=>{
+      console.log(err);
+      toast.error(err.message ? err.message : "Xatlik yuz berdi")
+      dispatch(setLoader(false))
+
+    })
+  },[token,dispatch])
   const handleCreate = () => {
     if (
       name === "" ||
@@ -22,26 +45,114 @@ const TaskForm = ({ modal, setModal }) => {
       startDate === "" ||
       finishDate === "" ||
       file === null ||
-      forward === ""
+      forward === "" ||
+      describe === ""
     ) {
       setError(true);
     } else {
-      postRequest("tasks",token).then(({data})=>{
-        console.log(data);
-        toast.success("Task yasaldi");
-        setModal(false)
+      let body = new FormData();
+      body.append('task_name', name);
+      body.append('level', level);
+      body.append('status', status);
+      body.append('start_date', startDate);
+      body.append('end_date', finishDate); 
+      body.append('description',describe);
+      body.append('file',file);
+      body.append('responsible_person',forward);
+      dispatch(setLoader(true))
+      postRequest("tasks",body,token).then(({data})=>{
+       console.log(data);
+       toast.success("Task yasaldi");
+       dispatch(setLoader(false))
+       setName("");
+       setLevel("")
+       setStartDate("")
+       setFinishDate("")
+      setDiscribe("")
+      dispatch(setModal(false))
+      getTask()
       }).catch((err)=>{
         console.log(err);
         toast.error(err.message ? err.message : "Xatolik yuz berdi")
+       dispatch(setLoader(false))
       })
       setError(false);
     }
   };
+  const handleUpdate = () => {
+    if (
+      name === "" ||
+      level === "" ||
+      status === "" ||
+      startDate === "" ||
+      finishDate === "" ||
+      file === null ||
+      forward === "" ||
+      describe === ""
+    ) {
+      setError(true);
+    } else {
+      const body = new FormData();
+      body.append('task_name', name);
+      body.append('level', level);
+      body.append('status', status);
+      body.append('start_date', startDate);
+      body.append('end_date', finishDate); 
+      body.append('description',describe);
+      body.append('file',file);
+      body.append('responsible_person', forward);
+      dispatch(setLoader(true))
+      postRequest("taskUpdate/" + update_task?.id,body,token).then(({data})=>{
+       console.log(data);
+       toast.success("Task yasaldi");
+       dispatch(setLoader(false))
+       setName("");
+       setLevel("")
+       setStartDate("")
+       setFinishDate("")
+      setDiscribe("")
+      dispatch(setModal(false))
+      localStorage.removeItem("update_task")
+      getTask()
+      }).catch((err)=>{
+        console.log(err);
+        toast.error(err.message ? err.message : "Xatolik yuz berdi")
+       dispatch(setLoader(false))
+      })
+      setError(false);
+    }
+  };
+  
+  const update_task =JSON.parse(localStorage.getItem("update_task"))
+  useEffect(()=>{
+     if(update_task){
+      setName(update_task?.task_name)
+      setLevel(update_task?.level) 
+      setStatus(update_task?.status)
+      setStartDate(update_task?.start_date)
+      setFinishDate(update_task?.end_date)
+      setDiscribe(update_task?.description)
+      setFile(update_task?.file)
+      setForward(update_task?.created_by)
+     }
+  },[modal])
+  useEffect(()=>{
+     if(update_task){
+      if(!modal){
+        localStorage.removeItem("update_task")
+        setName("");
+        setLevel("")
+        setStartDate("")
+        setFinishDate("")
+        setDiscribe("")
+       }
+     }
+  },[modal,update_task])
   return (
     <div className="TaskForm-container">
       <div className="TaskForm-head">
         <h1>Создать задачу</h1>
-        <button onClick={() => setModal(!modal)}>
+        <button onClick={() => dispatch(setModal(false))}>
           <icon.Close />
         </button>
       </div>
@@ -87,9 +198,10 @@ const TaskForm = ({ modal, setModal }) => {
                 onChange={(e) => setLevel(e.target.value)}
                 className={error ? (level === "" ? "error" : "") : ""}
               >
-                <option value="Высокий">Высокий</option>
-                <option value="Средний">Средний</option>
-                <option value="Низкий">Низкий</option>
+                <option value={level}>{level}</option>
+                <option value="Высокий" style={{display:level === "Высокий"?"none":"block"}}>Высокий</option>
+                <option value="Средний" style={{display:level === "средний"?"none":"block"}}>Средний</option>
+                <option value="Низкий" style={{display:level === "низкий"?"none":"block"}}>Низкий</option>
               </select>
             </div>
             <div className="input-container">
@@ -110,7 +222,7 @@ const TaskForm = ({ modal, setModal }) => {
                 <option value="Делать">Делать</option>
                 <option value="в ходе выполнения">в ходе выполнения</option>
                 <option value="Не выполненно">Не выполненно</option>
-                <option value="Сделанный">Сделанный</option>
+                <option value="сделно">сделно</option>
               </select>
             </div>
             <div className="input-container">
@@ -148,15 +260,10 @@ const TaskForm = ({ modal, setModal }) => {
               />
             </div>
           </div>
-          <label className="form-title">Описание</label>
-          <div className="form-description">
-            <p>
-              «Один на один» — это инновационное и эксклюзивное сетевое
-              мероприятие, призванное облегчить значимые связи и способствовать
-              профессиональному росту в разнообразном сообществе отраслевых
-              экспертов, профессионалов и энтузиастов.
-            </p>
-          </div>
+          <label className={`form-title ${error ? describe === "" ?"error":"":""}`}>Описание</label>
+          <textarea name="name" id="id" value={describe} onChange={(e)=>setDiscribe(e.target.value)} placeholder="Описание" className={`form-description ${error ? describe === "" ?"error":"":""}`}>
+
+          </textarea>
           <label
             className={
               error ? (file === null ? "error" : "form-title") : "form-title"
@@ -169,7 +276,6 @@ const TaskForm = ({ modal, setModal }) => {
               type="file"
               name="name"
               id="id"
-             
               onChange={(e) => {
                 setFile(e?.target?.files[0]);
               }}
@@ -191,17 +297,20 @@ const TaskForm = ({ modal, setModal }) => {
               onChange={(e) => setForward(e.target.value)}
               className={error ? (forward === "" ? "error" : "") : ""}
             >
-              <option value="Emily Taylor">Emily Taylor</option>
-              <option value="Emily Taylor">Emily Taylor</option>
+              {created_by.map((x)=>{
+                return <option value={x} key={x}>{x}</option>
+              })}
             </select>
           </div>
         </form>
       </div>
       <div className="TaskForm-footer">
         <div></div>
-        <button onClick={handleCreate}>
+        {update_task ?<button onClick={handleUpdate}>
+          Update <icon.ArrowRight2 />
+           </button>:<button onClick={handleCreate}>
           Сохранить <icon.ArrowRight2 />
-        </button>
+           </button>}
       </div>
     </div>
   );

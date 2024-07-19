@@ -1,4 +1,5 @@
 .ticket-container {
+  width: 100%;
   padding: 50px;
   border: 1px solid #dee1e6;
 }
@@ -38,7 +39,7 @@
   left: 0;
 }
 .ticket-container table {
-  width: 1097px;
+  width: 100% !important;
   height: 446px;
   margin-top: 10px;
 }

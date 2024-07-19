@@ -1,5 +1,7 @@
 .ReportForm-container {
   padding-left: 15px !important;
+  height: 100% !important;
+  overflow: auto;
 }
 .ReportForm-container .ReportForm-head {
   display: flex;

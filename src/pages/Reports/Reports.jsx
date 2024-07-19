@@ -39,6 +39,7 @@ const Reports = () => {
         toast.success("Отчеты пришол");
         dispatch(setReport(reponsive.data.data))
         dispatch(setLoader(false))
+        console.log(reponsive.data.data);
       })
       .catch((error) => {
         console.error("Xato", error);
@@ -50,7 +51,7 @@ const Reports = () => {
     if(report.length === 0){
       getReports();
     }
-  }, [getReports,report]);
+  }, [getReports,report.length]);
   useEffect(() => {
     setArray((Array) =>
       Array.map((x) => {
@@ -77,9 +78,12 @@ const Reports = () => {
             </button>
           </li>
           <li>
-            <button onClick={() => setMyReport(false)}>
+            <button onClick={() => setMyReport("")}>
               <icon.CalendarIcon color={"#535CE8"} />
             </button>
+          </li>
+          <li>
+            <button className="refresh-btn" onClick={()=>getReports()}>refresh</button>
           </li>
         </ul>
       </nav>
