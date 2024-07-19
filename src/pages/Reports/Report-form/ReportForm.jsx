@@ -21,24 +21,24 @@ const ReportForm = () => {
 
   const statusRef = useRef(null);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const token = localStorage.getItem("token");
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = useUser();
   const getReports = useCallback(() => {
-    dispatch(setLoader(true))
+    dispatch(setLoader(true));
     getReports("reports", token)
       .then((reponsive) => {
         toast.success("Отчеты пришол");
-        dispatch(setReport(reponsive.data.data))
-        dispatch(setLoader(false))
+        dispatch(setReport(reponsive.data.data));
+        dispatch(setLoader(false));
         console.log(reponsive.data.data);
       })
       .catch((error) => {
         console.error("Xato", error);
         toast.error(error.message ? error.message : "Xatolik yuz berdi");
-        dispatch(setLoader(false))
+        dispatch(setLoader(false));
       });
-  }, [token,dispatch]);
+  }, [token, dispatch]);
   const handleReport = () => {
     if (status_users.filter((f) => f === user?.user?.roles[0]?.name)[0]) {
       if (
@@ -71,8 +71,8 @@ const ReportForm = () => {
             setStatus("");
             setComments("");
             setFile(null);
-            dispatch(setModal(false))
-            getReports()
+            dispatch(setModal(false));
+            getReports();
           })
           .catch((err) => {
             console.log(err);
@@ -128,7 +128,7 @@ const ReportForm = () => {
     <div className="ReportForm-container">
       <div className="ReportForm-head">
         <h1>Создать Отчеты</h1>
-        <button onClick={() =>dispatch(setModal(false))}>
+        <button onClick={() => dispatch(setModal(false))}>
           <icon.Close />
         </button>
       </div>

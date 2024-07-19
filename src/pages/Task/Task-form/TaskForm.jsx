@@ -10,6 +10,8 @@ import { created_by } from "../../../utils/data";
 import { useModal } from "../../../redux/useSelector";
 import { setTask } from "../../../redux/taskSlice";
 
+const update_task = JSON.parse(localStorage.getItem("update_task"));
+
 const TaskForm = () => {
   const [name, setName] = useState("");
   const [level, setLevel] = useState("Высокий");
@@ -18,25 +20,25 @@ const TaskForm = () => {
   const [finishDate, setFinishDate] = useState("");
   const [file, setFile] = useState(null);
   const [forward, setForward] = useState("");
-  const [describe,setDiscribe] = useState("")
+  const [describe, setDiscribe] = useState("");
   const [error, setError] = useState(false);
-  const token = localStorage.getItem("token")
-  const modal = useModal()
-  const dispatch = useDispatch()
+  const token = localStorage.getItem("token");
+  const modal = useModal();
+  const dispatch = useDispatch();
   const getTask = useCallback(() => {
-    dispatch(setLoader(true))
-    getRequest("tasks",token)
-    .then(({data})=>{
-     toast.success("Tasklar keldi")
-     dispatch(setTask(data.data))
-     dispatch(setLoader(false))
-    }).catch((err)=>{
-      console.log(err);
-      toast.error(err.message ? err.message : "Xatlik yuz berdi")
-      dispatch(setLoader(false))
-
-    })
-  },[token,dispatch])
+    dispatch(setLoader(true));
+    getRequest("tasks", token)
+      .then(({ data }) => {
+        toast.success("Tasklar keldi");
+        dispatch(setTask(data.data));
+        dispatch(setLoader(false));
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.message ? err.message : "Xatlik yuz berdi");
+        dispatch(setLoader(false));
+      });
+  }, [token, dispatch]);
   const handleCreate = () => {
     if (
       name === "" ||
@@ -51,31 +53,33 @@ const TaskForm = () => {
       setError(true);
     } else {
       let body = new FormData();
-      body.append('task_name', name);
-      body.append('level', level);
-      body.append('status', status);
-      body.append('start_date', startDate);
-      body.append('end_date', finishDate); 
-      body.append('description',describe);
-      body.append('file',file);
-      body.append('responsible_person',forward);
-      dispatch(setLoader(true))
-      postRequest("tasks",body,token).then(({data})=>{
-       console.log(data);
-       toast.success("Task yasaldi");
-       dispatch(setLoader(false))
-       setName("");
-       setLevel("")
-       setStartDate("")
-       setFinishDate("")
-      setDiscribe("")
-      dispatch(setModal(false))
-      getTask()
-      }).catch((err)=>{
-        console.log(err);
-        toast.error(err.message ? err.message : "Xatolik yuz berdi")
-       dispatch(setLoader(false))
-      })
+      body.append("task_name", name);
+      body.append("level", level);
+      body.append("status", status);
+      body.append("start_date", startDate);
+      body.append("end_date", finishDate);
+      body.append("description", describe);
+      body.append("file", file);
+      body.append("responsible_person", forward);
+      dispatch(setLoader(true));
+      postRequest("tasks", body, token)
+        .then(({ data }) => {
+          console.log(data);
+          toast.success("Task yasaldi");
+          dispatch(setLoader(false));
+          setName("");
+          setLevel("");
+          setStartDate("");
+          setFinishDate("");
+          setDiscribe("");
+          dispatch(setModal(false));
+          getTask();
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err.message ? err.message : "Xatolik yuz berdi");
+          dispatch(setLoader(false));
+        });
       setError(false);
     }
   };
@@ -93,61 +97,62 @@ const TaskForm = () => {
       setError(true);
     } else {
       const body = new FormData();
-      body.append('task_name', name);
-      body.append('level', level);
-      body.append('status', status);
-      body.append('start_date', startDate);
-      body.append('end_date', finishDate); 
-      body.append('description',describe);
-      body.append('file',file);
-      body.append('responsible_person', forward);
-      dispatch(setLoader(true))
-      postRequest("taskUpdate/" + update_task?.id,body,token).then(({data})=>{
-       console.log(data);
-       toast.success("Task yasaldi");
-       dispatch(setLoader(false))
-       setName("");
-       setLevel("")
-       setStartDate("")
-       setFinishDate("")
-      setDiscribe("")
-      dispatch(setModal(false))
-      localStorage.removeItem("update_task")
-      getTask()
-      }).catch((err)=>{
-        console.log(err);
-        toast.error(err.message ? err.message : "Xatolik yuz berdi")
-       dispatch(setLoader(false))
-      })
+      body.append("task_name", name);
+      body.append("level", level);
+      body.append("status", status);
+      body.append("start_date", startDate);
+      body.append("end_date", finishDate);
+      body.append("description", describe);
+      body.append("file", file);
+      body.append("responsible_person", forward);
+      dispatch(setLoader(true));
+      postRequest("taskUpdate/" + update_task?.id, body, token)
+        .then(({ data }) => {
+          console.log(data);
+          toast.success("Task yasaldi");
+          dispatch(setLoader(false));
+          setName("");
+          setLevel("");
+          setStartDate("");
+          setFinishDate("");
+          setDiscribe("");
+          dispatch(setModal(false));
+          localStorage.removeItem("update_task");
+          getTask();
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err.message ? err.message : "Xatolik yuz berdi");
+          dispatch(setLoader(false));
+        });
       setError(false);
     }
   };
-  
-  const update_task =JSON.parse(localStorage.getItem("update_task"))
-  useEffect(()=>{
-     if(update_task){
-      setName(update_task?.task_name)
-      setLevel(update_task?.level) 
-      setStatus(update_task?.status)
-      setStartDate(update_task?.start_date)
-      setFinishDate(update_task?.end_date)
-      setDiscribe(update_task?.description)
-      setFile(update_task?.file)
-      setForward(update_task?.created_by)
-     }
-  },[modal])
-  useEffect(()=>{
-     if(update_task){
-      if(!modal){
-        localStorage.removeItem("update_task")
+
+  useEffect(() => {
+    if (update_task) {
+      setName(update_task?.task_name);
+      setLevel(update_task?.level);
+      setStatus(update_task?.status);
+      setStartDate(update_task?.start_date);
+      setFinishDate(update_task?.end_date);
+      setDiscribe(update_task?.description);
+      setFile(update_task?.file);
+      setForward(update_task?.created_by);
+    }
+  }, [modal]);
+  useEffect(() => {
+    if (update_task) {
+      if (!modal) {
+        localStorage.removeItem("update_task");
         setName("");
-        setLevel("")
-        setStartDate("")
-        setFinishDate("")
-        setDiscribe("")
-       }
-     }
-  },[modal,update_task])
+        setLevel("");
+        setStartDate("");
+        setFinishDate("");
+        setDiscribe("");
+      }
+    }
+  }, [modal]);
   return (
     <div className="TaskForm-container">
       <div className="TaskForm-head">
@@ -199,9 +204,24 @@ const TaskForm = () => {
                 className={error ? (level === "" ? "error" : "") : ""}
               >
                 <option value={level}>{level}</option>
-                <option value="Высокий" style={{display:level === "Высокий"?"none":"block"}}>Высокий</option>
-                <option value="Средний" style={{display:level === "средний"?"none":"block"}}>Средний</option>
-                <option value="Низкий" style={{display:level === "низкий"?"none":"block"}}>Низкий</option>
+                <option
+                  value="Высокий"
+                  style={{ display: level === "Высокий" ? "none" : "block" }}
+                >
+                  Высокий
+                </option>
+                <option
+                  value="Средний"
+                  style={{ display: level === "средний" ? "none" : "block" }}
+                >
+                  Средний
+                </option>
+                <option
+                  value="Низкий"
+                  style={{ display: level === "низкий" ? "none" : "block" }}
+                >
+                  Низкий
+                </option>
               </select>
             </div>
             <div className="input-container">
@@ -260,10 +280,23 @@ const TaskForm = () => {
               />
             </div>
           </div>
-          <label className={`form-title ${error ? describe === "" ?"error":"":""}`}>Описание</label>
-          <textarea name="name" id="id" value={describe} onChange={(e)=>setDiscribe(e.target.value)} placeholder="Описание" className={`form-description ${error ? describe === "" ?"error":"":""}`}>
-
-          </textarea>
+          <label
+            className={`form-title ${
+              error ? (describe === "" ? "error" : "") : ""
+            }`}
+          >
+            Описание
+          </label>
+          <textarea
+            name="name"
+            id="id"
+            value={describe}
+            onChange={(e) => setDiscribe(e.target.value)}
+            placeholder="Описание"
+            className={`form-description ${
+              error ? (describe === "" ? "error" : "") : ""
+            }`}
+          ></textarea>
           <label
             className={
               error ? (file === null ? "error" : "form-title") : "form-title"
@@ -297,8 +330,12 @@ const TaskForm = () => {
               onChange={(e) => setForward(e.target.value)}
               className={error ? (forward === "" ? "error" : "") : ""}
             >
-              {created_by.map((x)=>{
-                return <option value={x} key={x}>{x}</option>
+              {created_by.map((x) => {
+                return (
+                  <option value={x} key={x}>
+                    {x}
+                  </option>
+                );
               })}
             </select>
           </div>
@@ -306,11 +343,15 @@ const TaskForm = () => {
       </div>
       <div className="TaskForm-footer">
         <div></div>
-        {update_task ?<button onClick={handleUpdate}>
-          Update <icon.ArrowRight2 />
-           </button>:<button onClick={handleCreate}>
-          Сохранить <icon.ArrowRight2 />
-           </button>}
+        {update_task ? (
+          <button onClick={handleUpdate}>
+            Update <icon.ArrowRight2 />
+          </button>
+        ) : (
+          <button onClick={handleCreate}>
+            Сохранить <icon.ArrowRight2 />
+          </button>
+        )}
       </div>
     </div>
   );

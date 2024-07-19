@@ -44,8 +44,7 @@
   margin-top: 10px;
 }
 
-.ticket-container table thead tr,
-table tbody tr {
+.ticket-container table thead tr {
   display: flex;
   align-items: start;
   justify-content: space-between;
@@ -112,7 +111,6 @@ table tbody tr {
 }
 
 @media screen and (max-width: 500px) {
-  
   .ticket-container {
     padding: 0px;
   }
