@@ -1,14 +1,13 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import * as icon from "../../../assets/svgs/index";
 import "./TaskForm.css";
 import { toast } from "react-toastify";
-import { getRequest, postRequest } from "../../../service/api";
+import { postRequest } from "../../../service/api";
 import { useDispatch } from "react-redux";
 import { setLoader } from "../../../redux/loaderSlice";
 import { setModal } from "../../../redux/modalSlice";
 import { created_by } from "../../../utils/data";
 import { useModal } from "../../../redux/useSelector";
-import { setTask } from "../../../redux/taskSlice";
 
 const TaskForm = () => {
   const [name, setName] = useState("");
@@ -23,20 +22,6 @@ const TaskForm = () => {
   const token = localStorage.getItem("token")
   const modal = useModal()
   const dispatch = useDispatch()
-  const getTask = useCallback(() => {
-    dispatch(setLoader(true))
-    getRequest("tasks",token)
-    .then(({data})=>{
-     toast.success("Tasklar keldi")
-     dispatch(setTask(data.data))
-     dispatch(setLoader(false))
-    }).catch((err)=>{
-      console.log(err);
-      toast.error(err.message ? err.message : "Xatlik yuz berdi")
-      dispatch(setLoader(false))
-
-    })
-  },[token,dispatch])
   const handleCreate = () => {
     if (
       name === "" ||
@@ -70,7 +55,6 @@ const TaskForm = () => {
        setFinishDate("")
       setDiscribe("")
       dispatch(setModal(false))
-      getTask()
       }).catch((err)=>{
         console.log(err);
         toast.error(err.message ? err.message : "Xatolik yuz berdi")
@@ -113,7 +97,6 @@ const TaskForm = () => {
       setDiscribe("")
       dispatch(setModal(false))
       localStorage.removeItem("update_task")
-      getTask()
       }).catch((err)=>{
         console.log(err);
         toast.error(err.message ? err.message : "Xatolik yuz berdi")
@@ -135,7 +118,7 @@ const TaskForm = () => {
       setFile(update_task?.file)
       setForward(update_task?.created_by)
      }
-  },[modal])
+  },[modal,update_task])
   useEffect(()=>{
      if(update_task){
       if(!modal){

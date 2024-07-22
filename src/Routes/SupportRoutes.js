@@ -4,22 +4,26 @@ import Navbar from "../components/Navbar/Navbar";
 import Modal from "../components/Modal/Modal";
 import { modals, routes } from "../utils/data";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useModal } from "../redux/useSelector";
+import { setModal } from "../redux/modalSlice";
 
 const SupportRoute = () => {
   const { pathname } = useLocation();
-  const [modal, setModal] = useState(false);
-  const [sideBar, setsideBar] = useState(false);
   const ModalData = modals.filter((f) => f.path === pathname);
+  const [sideBar, setsideBar] = useState(false);
   const [bar, setBar] = useState(false);
+  const dispatch = useDispatch()
+  const modal = useModal()
   return (
     <div>
       <div
         className={`App ${
-          modal ? (ModalData.length === 0 ? "" : "activeApp") : ""
+          modal && (ModalData.length === 0 ? "" : "activeApp")
         }`}
         onClick={() => {
           if (modal) {
-            setModal(false);
+            dispatch(setModal(false))
           }
         }}
       >
