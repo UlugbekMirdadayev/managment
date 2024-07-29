@@ -353,13 +353,14 @@ const ArrowRight2 = () => (
   </svg>
 );
 
-const ArrowUp = () => (
+const ArrowUp = (props) => (
   <svg
     width="25"
     height="24"
     viewBox="0 0 25 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    {...props}
   >
     <path
       d="M20.1331 17.6091L21.7422 16L12.7422 7L3.74219 16L5.35128 17.6091L12.7422 10.2182L20.1331 17.6091Z"
