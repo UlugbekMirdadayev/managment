@@ -35,10 +35,17 @@
   gap: 30px;
   overflow: auto !important;
 }
+@media screen and (min-width:1300px) {
+  .tasks-wrapper {
+    width: 100%;
+  }
+}
 .tasks-wrapper .task-column {
   width: 324px;
   height: 100% !important;
   padding: 20px;
+  background-color: #F8F9FA;
+  border: 1px solid #F3F4F6;
 }
 .tasks-wrapper .task-column h1 {
   font-family: Lato, sans-serif;

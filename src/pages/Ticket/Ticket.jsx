@@ -73,6 +73,7 @@ const Ticket = () => {
               </tr>
             ));
           })}
+
         </tbody>
       </table>
       <table className="table-mobile">

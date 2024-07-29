@@ -2,15 +2,20 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const updateSlice = createSlice({
     name:"update",
-    initialState:localStorage.getItem("update") || {user:[],task:[]},
+    initialState:{user:[],task:[]},
     reducers:{
         updateTask(_,{payload}){
-            localStorage.setItem("update_task",JSON.stringify(payload))
             return payload
+        },
+        updateUser(_,{payload}){
+            return payload
+        },
+        clearUpdate(state,{payload}){
+           state = payload
         }
     }
 })
 
 
-export const {updateTask} = updateSlice.actions;
+export const {updateTask,updateUser,clearUpdate} = updateSlice.actions;
 export default updateSlice.reducer

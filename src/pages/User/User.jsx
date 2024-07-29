@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import * as icon from "../../assets/svgs/index";
 import { useDispatch } from "react-redux";
 import { setLoader } from "../../redux/loaderSlice";
+import { updateUser } from "../../redux/updateSlice";
 
 const User = () => {
   const [users, setUsers] = useState([]);
@@ -39,7 +40,7 @@ const User = () => {
     }
 },[users.length,getUsers])
   const Update = (item) => {
-    localStorage.setItem("updateUser", JSON.stringify(item));
+    dispatch(updateUser(item))
     navigate("/createUser");
   };
   const Delete = (id) => {
@@ -73,7 +74,6 @@ const User = () => {
     <>
       <div className={`User-container `}>
         <h1>Все пользователи</h1>
-        <button onClick={() => getUsers()} className="refresh-btn">refresh</button>
         <table className="table-desktop">
           <thead>
             <tr>

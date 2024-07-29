@@ -1,13 +1,14 @@
-import React, {  useEffect, useState } from "react";
+import React, {  useCallback, useEffect, useState } from "react";
 import * as icon from "../../../assets/svgs/index";
 import "./TaskForm.css";
 import { toast } from "react-toastify";
-import { postRequest } from "../../../service/api";
+import { getRequest, postRequest } from "../../../service/api";
 import { useDispatch } from "react-redux";
 import { setLoader } from "../../../redux/loaderSlice";
 import { setModal } from "../../../redux/modalSlice";
 import { created_by } from "../../../utils/data";
-import { useModal } from "../../../redux/useSelector";
+import { useModal, useUpdate } from "../../../redux/useSelector";
+import { setTask } from "../../../redux/taskSlice";
 
 const TaskForm = () => {
   const [name, setName] = useState("");
@@ -17,11 +18,25 @@ const TaskForm = () => {
   const [finishDate, setFinishDate] = useState("");
   const [file, setFile] = useState(null);
   const [forward, setForward] = useState("");
-  const [describe,setDiscribe] = useState("")
+  const [describe, setDiscribe] = useState("");
   const [error, setError] = useState(false);
   const token = localStorage.getItem("token")
   const modal = useModal()
   const dispatch = useDispatch()
+  const getTask = useCallback(() => {
+    dispatch(setLoader(true))
+    getRequest("tasks",token)
+    .then(({data})=>{
+     toast.success("Tasklar keldi")
+     dispatch(setTask(data.data))
+     dispatch(setLoader(false))
+    }).catch((err)=>{
+      console.log(err);
+      toast.error(err.message ? err.message : "Xatlik yuz berdi")
+      dispatch(setLoader(false))
+
+    })
+  },[token,dispatch])
   const handleCreate = () => {
     if (
       name === "" ||
@@ -55,6 +70,7 @@ const TaskForm = () => {
        setFinishDate("")
       setDiscribe("")
       dispatch(setModal(false))
+      getTask()
       }).catch((err)=>{
         console.log(err);
         toast.error(err.message ? err.message : "Xatolik yuz berdi")
@@ -83,7 +99,7 @@ const TaskForm = () => {
       body.append('start_date', startDate);
       body.append('end_date', finishDate); 
       body.append('description',describe);
-      body.append('file',file);
+      body.append('file',null);
       body.append('responsible_person', forward);
       dispatch(setLoader(true))
       postRequest("taskUpdate/" + update_task?.id,body,token).then(({data})=>{
@@ -96,7 +112,7 @@ const TaskForm = () => {
        setFinishDate("")
       setDiscribe("")
       dispatch(setModal(false))
-      localStorage.removeItem("update_task")
+      getTask()
       }).catch((err)=>{
         console.log(err);
         toast.error(err.message ? err.message : "Xatolik yuz berdi")
@@ -106,7 +122,7 @@ const TaskForm = () => {
     }
   };
   
-  const update_task =JSON.parse(localStorage.getItem("update_task"))
+  const update_task =useUpdate()
   useEffect(()=>{
      if(update_task){
       setName(update_task?.task_name)
@@ -119,18 +135,7 @@ const TaskForm = () => {
       setForward(update_task?.created_by)
      }
   },[modal,update_task])
-  useEffect(()=>{
-     if(update_task){
-      if(!modal){
-        localStorage.removeItem("update_task")
-        setName("");
-        setLevel("")
-        setStartDate("")
-        setFinishDate("")
-        setDiscribe("")
-       }
-     }
-  },[modal,update_task])
+
   return (
     <div className="TaskForm-container">
       <div className="TaskForm-head">
@@ -182,9 +187,24 @@ const TaskForm = () => {
                 className={error ? (level === "" ? "error" : "") : ""}
               >
                 <option value={level}>{level}</option>
-                <option value="Высокий" style={{display:level === "Высокий"?"none":"block"}}>Высокий</option>
-                <option value="Средний" style={{display:level === "средний"?"none":"block"}}>Средний</option>
-                <option value="Низкий" style={{display:level === "низкий"?"none":"block"}}>Низкий</option>
+                <option
+                  value="Высокий"
+                  style={{ display: level === "Высокий" ? "none" : "block" }}
+                >
+                  Высокий
+                </option>
+                <option
+                  value="Средний"
+                  style={{ display: level === "средний" ? "none" : "block" }}
+                >
+                  Средний
+                </option>
+                <option
+                  value="Низкий"
+                  style={{ display: level === "низкий" ? "none" : "block" }}
+                >
+                  Низкий
+                </option>
               </select>
             </div>
             <div className="input-container">
@@ -243,10 +263,23 @@ const TaskForm = () => {
               />
             </div>
           </div>
-          <label className={`form-title ${error ? describe === "" ?"error":"":""}`}>Описание</label>
-          <textarea name="name" id="id" value={describe} onChange={(e)=>setDiscribe(e.target.value)} placeholder="Описание" className={`form-description ${error ? describe === "" ?"error":"":""}`}>
-
-          </textarea>
+          <label
+            className={`form-title ${
+              error ? (describe === "" ? "error" : "") : ""
+            }`}
+          >
+            Описание
+          </label>
+          <textarea
+            name="name"
+            id="id"
+            value={describe}
+            onChange={(e) => setDiscribe(e.target.value)}
+            placeholder="Описание"
+            className={`form-description ${
+              error ? (describe === "" ? "error" : "") : ""
+            }`}
+          ></textarea>
           <label
             className={
               error ? (file === null ? "error" : "form-title") : "form-title"
@@ -280,8 +313,12 @@ const TaskForm = () => {
               onChange={(e) => setForward(e.target.value)}
               className={error ? (forward === "" ? "error" : "") : ""}
             >
-              {created_by.map((x)=>{
-                return <option value={x} key={x}>{x}</option>
+              {created_by.map((x) => {
+                return (
+                  <option value={x} key={x}>
+                    {x}
+                  </option>
+                );
               })}
             </select>
           </div>
@@ -289,11 +326,15 @@ const TaskForm = () => {
       </div>
       <div className="TaskForm-footer">
         <div></div>
-        {update_task ?<button onClick={handleUpdate}>
-          Update <icon.ArrowRight2 />
-           </button>:<button onClick={handleCreate}>
-          Сохранить <icon.ArrowRight2 />
-           </button>}
+        {update_task ? (
+          <button onClick={handleUpdate}>
+            Update <icon.ArrowRight2 />
+          </button>
+        ) : (
+          <button onClick={handleCreate}>
+            Сохранить <icon.ArrowRight2 />
+          </button>
+        )}
       </div>
     </div>
   );

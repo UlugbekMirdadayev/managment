@@ -82,9 +82,6 @@ const Reports = () => {
               <icon.CalendarIcon color={"#535CE8"} />
             </button>
           </li>
-          <li>
-            <button className="refresh-btn" onClick={()=>getReports()}>refresh</button>
-          </li>
         </ul>
       </nav>
       <div className="report-wrapper">

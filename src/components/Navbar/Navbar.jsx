@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 import { deletePlus, extraListHead, listHaed } from "../../utils/data";
 import { Plus } from "../../assets/svgs";
 import User from "../../assets/images/Avatar.png";
-import { useModal } from "../../redux/useSelector";
 import { useDispatch } from "react-redux";
 import { setModal } from "../../redux/modalSlice";
 
@@ -12,7 +11,7 @@ const Navbar = ({setsideBar, bar, setBar }) => {
   const { pathname } = useLocation();
   const user = JSON.parse(localStorage.getItem("user"));
   const dispatch = useDispatch()
-  const modal = useModal()
+
   return (
     <header className="nav-conatiner">
       <nav>

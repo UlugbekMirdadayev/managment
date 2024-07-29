@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLoader } from "../../../redux/loaderSlice";
+import { useUpdate } from "../../../redux/useSelector";
+import { clearUpdate } from "../../../redux/updateSlice";
 
 const AddUser = () => {
   const [arrow, setArrow] = useState(false);
@@ -13,7 +15,7 @@ const AddUser = () => {
   const [lastname, setLastName] = useState("");
   const [surname, setSurName] = useState("");
   const [telegram, setTelegram] = useState("");
-  const [roles, setRoles] = useState("manager");
+  const [roles, setRoles] = useState("");
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
@@ -63,12 +65,12 @@ const AddUser = () => {
       setError(false);
     }
   };
-  let updateUser = JSON.parse(localStorage.getItem("updateUser"));
+  let updateUser = useUpdate()
   useEffect(() => {
     if (updateUser) {
-      setName(updateUser?.name.split(" ")[1]);
-      setLastName(updateUser?.name.split(" ")[0]);
-      setSurName(updateUser?.name.split(" ")[2]);
+      setName(updateUser?.name?.split(" ")[1]);
+      setLastName(updateUser?.name?.split(" ")[0]);
+      setSurName(updateUser?.name?.split(" ")[2]);
       setTelegram(updateUser?.telegram);
       setRoles(updateUser?.role);
       setLogin(updateUser?.email);
@@ -97,6 +99,7 @@ const AddUser = () => {
         .then(({ data }) => {
           console.log(data);
           toast.success("User o`zgar tirildi");
+          dispatch(clearUpdate())
           setName("");
           setLastName("");
           setSurName("");
@@ -105,7 +108,6 @@ const AddUser = () => {
           setLogin("");
           setPassword("");
           navigate("/users");
-          localStorage.removeItem("updateUser");
          dispatch(setLoader(false))
         })
         .catch((err) => {
@@ -193,11 +195,10 @@ const AddUser = () => {
             <div
               className="input"
               onClick={() => {
-                setRoles("manager");
                 setArrow(!arrow);
               }}
             >
-              {roles}
+             {roles === undefined ? "manager":roles}
               <button
                 className="arrow"
                 type="button"

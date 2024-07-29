@@ -74,6 +74,24 @@
 .SignUp-container label.error {
   color: red !important;
 }
+.loader-user {
+  width: 100%;
+  display: none;
+  z-index: 2;
+}
+.loader-user .loader {
+  border: 10px solid #f3f3f3;
+  border-top: 10px solid #3498db;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 2s linear infinite;
+}
+.active-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 @media screen and (max-width: 500px) {
   .SignUp-container form {
