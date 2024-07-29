@@ -4,6 +4,7 @@ import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "./Calendar.css"; // Custom CSS for styling
 import { Flex } from "@mantine/core";
+import { ArrowLeft, ArrowRight } from "../../assets/svgs";
 
 const events = [
   {
@@ -151,9 +152,7 @@ const CalendarUI = () => {
     <div className="calendar">
       <div className="calendar-header">
         <Flex className="calendar-header-left">
-          <h2 onClick={() => {
-            console.log(calendarRef.current.click());
-          }}>
+          <h2 className="calendar-picker" onClick={() => calendarRef.current.click()}>
             {currentDate.toLocaleString("ru", {
               weekday: "short",
               day: "2-digit",
@@ -168,7 +167,7 @@ const CalendarUI = () => {
             ref={calendarRef}
             display="none"
           />
-          <button
+          <button className="calendar-header-arrow"
             onClick={() =>
               setCurrentDate(
                 new Date(currentDate.setDate(currentDate.getDate() - 1))
@@ -176,11 +175,11 @@ const CalendarUI = () => {
             }
           >
             <span role="img" aria-label="arrow-left">
-              ⬅️
+              <ArrowLeft />
             </span>
           </button>
 
-          <button
+          <button className="calendar-header-arrow calendar-header-next-arrow"
             onClick={() =>
               setCurrentDate(
                 new Date(currentDate.setDate(currentDate.getDate() + 1))
@@ -188,15 +187,15 @@ const CalendarUI = () => {
             }
           >
             <span role="img" aria-label="arrow-right">
-              ➡️
+              <ArrowRight />
             </span>
           </button>
-          <button onClick={() => setCurrentDate(new Date())}>Сегодня</button>
+          <button className="today-navigation" onClick={() => setCurrentDate(new Date())}>Сегодня</button>
         </Flex>
-        <div>
-          <button onClick={() => setView("day")}>День</button>
-          <button onClick={() => setView("week")}>Неделя</button>
-          <button onClick={() => setView("month")}>Месяц</button>
+        <div className="link-navigations">
+          <button className={`link-navigation ${view === "day" ? "active" : ""}`} onClick={() => setView("day")}>День</button>
+          <button className={`link-navigation ${view === "week" ? "active" : ""}`} onClick={() => setView("week")}>Неделя</button>
+          <button className={`link-navigation ${view === "month" ? "active" : ""}`} onClick={() => setView("month")}>Месяц</button>
         </div>
       </div>
       {view === "day" && (
