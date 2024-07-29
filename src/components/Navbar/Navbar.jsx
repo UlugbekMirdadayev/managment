@@ -60,8 +60,10 @@ const Navbar = ({setsideBar, bar, setBar }) => {
                 deletePlus.filter((f) => f === pathname)[0] === pathname
                   ? "none"
                   : "flex",
-            }}
+            ":hover":{
+            }}}
             className="btn"
+            
           >
             <Plus />
             Создать

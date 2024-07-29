@@ -24,6 +24,10 @@
   gap: 15px;
   color: #565e6c;
   cursor: pointer;
+  transition: all .5s ease-in-out;
+  border: 1px solid transparent;
+  position: relative;
+  z-index: 2;
 }
 
 .sidebar ul li.active {
@@ -52,9 +56,46 @@
   border: none;
   cursor: pointer;
 }
+.sidebar .firstUl .li::before{
+  background: #535ce8;
+  content: "";
+  inset: 0;
+  position: absolute;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s ease-in-out;
+  z-index: -1;  
+}
+.sidebar .firstUl .li:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.sidebar .firstUl .li:hover,.sidebar .firstUl .li:hover svg {
+  color: white !important;
+}
+.logOutLi {
+  position: relative;
+}
+.logOutLi::before {
+   background: red;
+   content: "";
+   inset: 0;
+   position: absolute;
+   transform: scaleX(0);
+   transform-origin: right;
+   transition: transform 0.5s ease-in-out;
+   z-index: -1;
+}
+.logOutLi:hover::before{
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.logOutLi:hover a {
+  color: white;
+}
+
 
 .user-list {
-  height: 150px;
   width: 100%;
 }
 
@@ -86,8 +127,8 @@
 .user-list ul li {
   display: flex !important;
   align-items: center;
-width: 200px !important;
-  height: 40px;
+  width: 200px !important;
+  height: 30px;
   padding: 8px 16px 8px 16px;
   font-family: Lato, sans-serif;
   font-size: 14px;
@@ -123,7 +164,8 @@ width: 200px !important;
 
 @media screen and (max-width: 500px) {
   .sidebar {
-    width: 100% !important;
+    width: 100%;
+    height: 120%;
     position: absolute;
     z-index: 1;
     padding:15px 20px 20px 30px;
@@ -134,7 +176,7 @@ width: 200px !important;
     left: 0;
   }
   .sidebar ul {
-    height: 70vh;
+    height: 80vh;
   }
   .sidebar ul li {
     width: 300px !important;
@@ -143,7 +185,7 @@ width: 200px !important;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 50px;
+    height: 40px;
   }
   .sidebar-head {
     display: flex;
@@ -151,5 +193,7 @@ width: 200px !important;
     justify-content: space-between;
     width: 300px;
   }
+
+  
 
 }

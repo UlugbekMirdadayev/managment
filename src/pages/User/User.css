@@ -1,6 +1,6 @@
 .User-container {
   padding: 50px;
-  width: 1250px !important;
+  width: 100% !important;
   position: relative;
 }
 
@@ -125,6 +125,7 @@
 
 @media screen and (max-width: 500px) {
   .table-mobile {
+    width: 100%;
     display: block;
   }
   .User-container {
@@ -135,13 +136,14 @@
     display: grid !important;
     grid-template-columns: 1fr;
     border: 1px solid #dee1e6;
-    width: 100%;
-    height:50px!important;
+    width: 350px !important;
+    height:50px;
     margin-top: 15px;
   }
   .User-container .table-mobile tbody .tr tr {
     display: flex;
     align-items: center;
+    width: 100% !important;
   }
   .User-container .table-mobile tbody .tr tr .td-btn {
     width: 30px !important;
@@ -154,5 +156,6 @@
   }
   .User-container .table-mobile tbody .active-arrow-table {
     height: 100% !important;
+    width: 100% !important;
   }
 }

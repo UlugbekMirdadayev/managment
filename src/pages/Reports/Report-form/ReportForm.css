@@ -25,6 +25,7 @@
   background-color: white;
   cursor: pointer;
   border: none;
+  margin-right: 30px;
 }
 .ReportForm-container .ReportForm-body {
   margin-top: 15px;

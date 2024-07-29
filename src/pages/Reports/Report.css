@@ -81,6 +81,7 @@
   height: 246px;
   background-color: #ffffff;
   display: flex;
+  transition: all .5s ease-in-out;
 }
 .body-wrap .card hr {
   width: 8px;
@@ -92,6 +93,8 @@
 }
 .body-wrap .card-right {
   padding: 15px;
+  transition: all .5s ease-in-out;
+
 }
 .body-wrap .card .card-right .card-right-head {
   display: flex;

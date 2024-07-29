@@ -52,7 +52,7 @@ export const FakeTickets = [
       {
         id: 123,
         date: "17.07.2024",
-        status: "Новый",
+        status: "Новые",
         proekt: "Lorem",
         group: "Link telegram",
         NameTicket: "Link telegram",
@@ -84,7 +84,7 @@ export const FakeTickets = [
       {
         id: 123,
         date: "17.07.2024",
-        status: "Закрыт",
+        status: "Закрыты",
         proekt: "Lorem",
         group: "Link telegram",
         NameTicket: "Link telegram",
@@ -152,5 +152,5 @@ export const status_users = ["general_director", "owner"];
 
 
 export const created_by = [
-  "Support","Manager","OWener","Director",
+  "Support","Manager","Owener","Director",
 ]

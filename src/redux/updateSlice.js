@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+let initialState ={user:[],task:[]}
+
 const updateSlice = createSlice({
     name:"update",
-    initialState:{user:[],task:[]},
+    initialState,
     reducers:{
         updateTask(_,{payload}){
             return payload
@@ -10,8 +12,8 @@ const updateSlice = createSlice({
         updateUser(_,{payload}){
             return payload
         },
-        clearUpdate(state,{payload}){
-           state = payload
+        clearUpdate(_,actions){
+          return initialState
         }
     }
 })

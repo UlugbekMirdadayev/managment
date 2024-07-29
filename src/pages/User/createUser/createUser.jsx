@@ -97,9 +97,8 @@ const AddUser = () => {
       dispatch(setLoader(true))
       postRequest("userUpdate/" + updateUser.id, data, token)
         .then(({ data }) => {
-          console.log(data);
-          toast.success("User o`zgar tirildi");
           dispatch(clearUpdate())
+          toast.success("User o`zgar tirildi");
           setName("");
           setLastName("");
           setSurName("");
@@ -284,8 +283,8 @@ const AddUser = () => {
         <div className="form-footer">
           <div></div>
           <div className="form-actions">
-            {updateUser ? (
-              <button onClick={handleUpdate}>update</button>
+            {updateUser?.name ? (
+              <button onClick={handleUpdate} type="button">update</button>
             ) : (
               <button type="sumbit">Сохранить</button>
             )}

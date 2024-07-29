@@ -23,6 +23,7 @@
   background-color: white;
   cursor: pointer;
   border: none;
+  margin-right: 50px;
 }
 .TaskForm-container .TaskForm-body {
   margin-top: 15px;

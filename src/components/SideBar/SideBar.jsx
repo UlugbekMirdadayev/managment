@@ -6,6 +6,7 @@ import * as icon from "../../assets/svgs/index";
 import { useDispatch } from "react-redux";
 import { clearUser } from "../../redux/userSlice";
 import User from "../../assets/images/Avatar.png";
+import { hover } from "@syncfusion/ej2-react-schedule";
 
 const SideBar = ({ deleted, sideBar, setsideBar, bar, setBar }) => {
   const [user, setUser] = useState(false);
@@ -22,7 +23,7 @@ const SideBar = ({ deleted, sideBar, setsideBar, bar, setBar }) => {
     <>
       <div className={`sidebar ${sideBar ? "active-sidebar" : ""}`}>
    
-        <ul>
+        <ul className="firstUl">
         <div className="sidebar-head">
           <div
             className={`bars ${bar ? "bar-active" : ""}`}
@@ -59,6 +60,7 @@ const SideBar = ({ deleted, sideBar, setsideBar, bar, setBar }) => {
               >
                 <item.icon
                   color={pathname === item.path ? "white" : "#565E6C"}
+                  
                 />
                 {item.title}
               </li>
@@ -97,7 +99,7 @@ const SideBar = ({ deleted, sideBar, setsideBar, bar, setBar }) => {
             </ul>
           </li>
         </ul>
-        <ul>
+        <ul >
           <li className="li">
             <icon.Icon1 /> <button>Бизнес аналитик</button>
           </li>
@@ -107,7 +109,7 @@ const SideBar = ({ deleted, sideBar, setsideBar, bar, setBar }) => {
           <li className="li">
             <icon.Icon3 /> <button>Тех.хаб</button>
           </li>
-          <li onClick={() => LogOut()} className="li">
+          <li onClick={() => LogOut()} className="li logOutLi">
             <NavLink style={{ color: "#565E6C" }} to={"/"}>
               Выход
             </NavLink>

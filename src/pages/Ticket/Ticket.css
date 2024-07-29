@@ -109,14 +109,14 @@
   border: none;
 }
 
-.ticket-container table tbody tr .Закрыт button {
+.ticket-container table tbody tr .Закрыты button {
   color: white;
   background-color: #de3b40;
 }
 .ticket-container table tbody tr .Открыты button {
   background-color: #1dd75b;
 }
-.ticket-container table tbody tr .Новый button {
+.ticket-container table tbody tr .Новые button {
   background-color: #efb034;
 }
 
@@ -126,17 +126,21 @@
 
 @media screen and (max-width: 500px) {
   .ticket-container {
-    padding: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 100%;
   }
-  .ticket-container nav {
-    width: 100%;
+
+  .ticket-container nav ul {
+    width: 100% !important;
   }
   .ticket-container nav ul li {
-    width: 75px !important;
-    height: 52px !important;
+    width: 25% !important;
+    height: 100% !important;
+
   }
   .ticket-container table {
-    width: 340px;
+    width: 100%;
     height: 100%;
   }
   .table-desktop {
@@ -147,11 +151,11 @@
     width: 100%;
   }
   .table-mobile tbody .tr {
-    width: 340px !important;
-    height: 61px !important;
+    width: 100% !important;
+    height: 60px !important;
     display: grid;
     grid-template-columns: 1fr;
-    border: 1px solid #dee1e6;
+    gap: 0px !important;
   }
   .table-mobile tbody .active-arrow-table {
     height: 100% !important;
@@ -160,10 +164,12 @@
     display: flex !important;
   }
   .table-mobile-td {
-    display: none;
+    display: none !important;
   }
   .table-mobile tbody .tr tr {
     padding-left: 15px;
+    height: 100% !important;
+    border: 1px solid #dee1e6;
   }
   .table-mobile tbody .tr tr th {
     font-family: Outfit, sans-serif;
@@ -171,8 +177,15 @@
     font-weight: 600;
     line-height: 22px;
     text-align: left;
+    width: 50% !important;
+    height: 100%;
+    display: flex;
+    align-items: center;
   }
   .table-mobile tbody .tr tr td {
+    width: 50% !important;
+    height: 100%;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;

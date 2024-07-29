@@ -64,7 +64,7 @@ const Ticket = () => {
                 <td>{i.id}</td>
                 <td>{i.date}</td>
                 <td className={`status ${i.status}`}>
-                  <button>{i.status}</button>
+                  <button onClick={()=>setSelect(i.status)}>{i.status}</button>
                 </td>
                 <td>{i.proekt}</td>
                 <td>{i.group}</td>
@@ -87,7 +87,7 @@ const Ticket = () => {
                 <tr>
                   <th>ID</th>
                   <td>
-                    {i.id}{" "}
+                    {i.id}
                     <button
                       className="td-btn"
                       onClick={() => hanldeArrow(item)}
@@ -97,50 +97,50 @@ const Ticket = () => {
                   </td>
                 </tr>
                 <tr
-                  className={`table-mobile-td ${
-                    item.arrow ? "active-arrow-tr" : ""
+                  className={` ${
+                    item.arrow ? "active-arrow-tr" : "table-mobile-td"
                   }`}
                 >
                   <th>Дата</th>
                   <td>{i.date}</td>
                 </tr>
                 <tr
-                  className={`table-mobile-td ${
-                    item.arrow ? "active-arrow-tr" : ""
+                  className={` ${
+                    item.arrow ? "active-arrow-tr" : "table-mobile-td"
                   }`}
                 >
                   <th>Статус</th>
                   <td className={`status ${i.status}`}>
-                    <button>{i.status}</button>
+                    <button >{i.status}</button>
                   </td>
                 </tr>
                 <tr
-                  className={` table-mobile-td ${
-                    item.arrow ? "active-arrow-tr" : ""
+                  className={`  ${
+                    item.arrow ? "active-arrow-tr" : "table-mobile-td"
                   }`}
                 >
                   <th>Проект</th>
                   <td>{i.proekt}</td>
                 </tr>
                 <tr
-                  className={`table-mobile-td ${
-                    item.arrow ? "active-arrow-tr" : ""
+                  className={` ${
+                    item.arrow ? "active-arrow-tr" : "table-mobile-td"
                   }`}
                 >
                   <th>Тг.Группа</th>
                   <td>{i.group}</td>
                 </tr>
                 <tr
-                  className={`table-mobile-td  ${
-                    item.arrow ? "active-arrow-tr" : ""
+                  className={`  ${
+                    item.arrow ? "active-arrow-tr" : "table-mobile-td"
                   }`}
                 >
                   <th>Название тикета</th>
                   <td className="nameTicket">{i.NameTicket}</td>
                 </tr>
                 <tr
-                  className={`table-mobile-td ${
-                    item.arrow ? "active-arrow-tr" : ""
+                  className={` ${
+                    item.arrow ? "active-arrow-tr" : "table-mobile-td"
                   }`}
                 >
                   <th>Описание</th>

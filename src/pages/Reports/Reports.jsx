@@ -108,7 +108,7 @@ const Reports = () => {
               <div className={`wrapper-body ${item?.arrow ? "arrow1" : ""}`}>
                 <div className="body-wrap">
                   {report?.length === 0 ? (
-                    <h2 className="h2-report">Отчеты нету</h2>
+                   ""
                   ) : (
                     item?.child.map((i, index) => {
                       return (
