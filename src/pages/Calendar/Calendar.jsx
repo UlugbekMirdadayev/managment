@@ -1,495 +1,318 @@
-import React, { useCallback, useEffect, useState } from "react";
-import * as icon from "../../assets/svgs/index";
-import moment from "moment";
-import "./Calendar.css";
-import { useCalendar } from "../../redux/useSelector";
-import { getRequest } from "../../service/api";
-import { setCalendar } from "../../redux/calendarSlice";
-import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { setLoader } from "../../redux/loaderSlice";
+import React, { useState } from "react";
+import { DatePickerInput } from "@mantine/dates";
+import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
+import "./Calendar.css"; // Custom CSS for styling
+import { Flex } from "@mantine/core";
 
-const dayArray = [
+const events = [
   {
-    time: "1 AM",
-    data: { description: "", startTime: "", finishTime: "" },
+    title: "Начало проекта",
+    start: "2023-07-10T08:00:00",
+    end: "2023-07-10T09:00:00",
+    color: "gray",
   },
   {
-    time: "2 AM",
-    data: { description: "", startTime: "", finishTime: "" },
+    title: "Творческая мастерская",
+    start: "2023-07-10T09:00:00",
+    end: "2023-07-10T11:00:00",
+    color: "orange",
   },
   {
-    time: "3 AM",
-    data: { description: "", startTime: "", finishTime: "" },
+    title: "Счастливый час",
+    start: "2023-07-10T13:00:00",
+    end: "2023-07-10T14:00:00",
+    color: "yellow",
   },
   {
-    time: "4 AM",
-    data: { description: "", startTime: "", finishTime: "" },
+    title: "Один на один",
+    start: "2023-07-10T15:00:00",
+    end: "2023-07-10T16:00:00",
+    color: "red",
   },
-  {
-    time: "5 AM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "6 AM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "7 AM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "8 AM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "9 AM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "10 AM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "11 AM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "12 AM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "1 PM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "2 PM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "3 PM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "4 PM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "5 PM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "6 PM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "7 PM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "8 PM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "9 PM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "10 PM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-  {
-    time: "11 PM",
-    data: { description: "", startTime: "", finishTime: "" },
-  },
-];
-const weekArray = [
-  {
-    children: [
-      { title: "ПН", day: "17" },
-      { title: "ВТ", day: "10" },
-      { title: "СР", day: "10" },
-      { title: "ЧТ", day: "10" },
-      { title: "ПТ", day: "10" },
-      { title: "СБ", day: "10" },
-      { title: "ВС", day: "10" },
-    ],
-  },
-  {
-    children: [
-      {
-        time: "1 AM",
-      },
-      {
-        time: "2 AM",
-      },
-      {
-        time: "3 AM",
-      },
-      {
-        time: "4 AM",
-      },
-      {
-        time: "5 AM",
-      },
-      {
-        time: "6 AM",
-      },
-      {
-        time: "7 AM",
-      },
-      {
-        time: "8 AM",
-      },
-      {
-        time: "9 AM",
-      },
-      {
-        time: "10 AM",
-      },
-      {
-        time: "11 AM",
-      },
-      {
-        time: "12 AM",
-      },
-      {
-        time: "1 PM",
-      },
-      {
-        time: "2 PM",
-      },
-      {
-        time: "3 PM",
-      },
-      {
-        time: "4 PM",
-      },
-      {
-        time: "5 PM",
-      },
-      {
-        time: "6 PM",
-      },
-      {
-        time: "7 PM",
-      },
-      {
-        time: "8 PM",
-      },
-      {
-        time: "9 PM",
-      },
-      {
-        time: "10 PM",
-      },
-      {
-        time: "11 PM",
-      },
-    ],
-  },
-];
-const monthArray = [
-  { date: "26", data: [{ description: "Tugulgan kun", time: "15:00" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-  { date: "26", data: [{ description: "", time: "" }] },
-];
-const Dates = [
-  [
-    { index: 1, kun: "Понедельник" },
-    { index: 2, kun: "Вторник" },
-    { index: 3, kun: "Среда" },
-    { index: 4, kun: "Четверг" },
-    { index: 5, kun: "Пятница" },
-    { index: 6, kun: "Суббота" },
-    { index: 7, kun: "Воскресенье" },
-  ],
-  [
-    { index: 1, oy: "Январь" },
-    { index: 2, oy: "Февраль" },
-    { index: 3, oy: "Март" },
-    { index: 4, oy: "Апрель" },
-    { index: 5, oy: "Май" },
-    { index: 6, oy: "Июнь" },
-    { index: 7, oy: "Июль" },
-    { index: 8, oy: "Август" },
-    { index: 9, oy: "Сентябрь" },
-    { index: 10, oy: "Октябрь" },
-    { index: 11, oy: "Ноябрь" },
-    { index: 12, oy: "Декабрь" },
-  ],
 ];
 
-const Calendar = () => {
-  const calendar = useCalendar();
-  const [arrowActive, setArrowActive] = useState("day");
-  const dispatch = useDispatch();
+const CalendarUI = () => {
+  const [currentDate, setCurrentDate] = useState(new Date("2023-07-10"));
+  const [view, setView] = useState("day");
+  const calendarRef = React.createRef();
 
-  const changeArrow = (name) => {
-    setArrowActive(name);
-    localStorage.setItem("arrow", name);
+  const formatTime = (date) => {
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    return `${hours}:${minutes} ${ampm}`;
   };
 
-  useEffect(() => {
-    if (localStorage.getItem("arrow")) {
-      setArrowActive(localStorage.getItem("arrow"));
-    } else {
-      setArrowActive(arrowActive);
-    }
-  }, [arrowActive, setArrowActive]);
+  const getEventsForCurrentDay = () => {
+    return events.filter(
+      (event) =>
+        new Date(event.start).toDateString() === currentDate.toDateString()
+    );
+  };
 
-  const token = localStorage.getItem("token");
-  const getReports = useCallback(() => {
-    dispatch(setLoader(true))
-    getRequest("meetings", token)
-      .then(({ data }) => {
-        toast.success("Meetings пришол");
-        dispatch(setCalendar(data.data));
-    dispatch(setLoader(false))
+  const getEventsForCurrentWeek = () => {
+    const startOfWeek = new Date(currentDate);
+    startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
 
-      })
-      .catch((error) => {
-        console.error("Xato", error);
-        toast.error(error.message ? error.message : "Xatolik yuz berdi");
-    dispatch(setLoader(false))
+    return events.filter(
+      (event) =>
+        new Date(event.start) >= startOfWeek &&
+        new Date(event.start) <= endOfWeek
+    );
+  };
 
-      });
-  }, [token, dispatch]);
+  const getEventsForCurrentMonth = () => {
+    const startOfMonth = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      1
+    );
+    const endOfMonth = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      0
+    );
 
-  useEffect(() => {
-    if (calendar.length === 0) {
-      getReports();
-    }
-  }, [getReports, calendar.length]);
+    return events.filter(
+      (event) =>
+        new Date(event.start) >= startOfMonth &&
+        new Date(event.start) <= endOfMonth
+    );
+  };
+
+  const hoursInDay = () => {
+    return Array.from({ length: 24 }, (_, i) => {
+      let hour = i;
+      let period = "AM";
+      if (i >= 12) {
+        period = "PM";
+      }
+      if (i === 0) {
+        hour = 12;
+      } else if (i > 12) {
+        hour = i - 12;
+      }
+      return `${hour.toString().padStart(2, "0")}:00 ${period}`;
+    });
+  };
+
+  const daysInWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  const daysInMonth = (date) => {
+    const start = new Date(date.getFullYear(), date.getMonth(), 1);
+    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+    const addDays = (days, day, end, increment) =>
+      day > end
+        ? days
+        : addDays(
+            [...days, new Date(day)],
+            new Date(day.setDate(day.getDate() + increment)),
+            end,
+            increment
+          );
+
+    const prevDays = (days, day, count) =>
+      count === 0
+        ? days
+        : prevDays(
+            [...days, new Date(day)],
+            new Date(day.setDate(day.getDate() - 1)),
+            count - 1
+          );
+
+    const nextDays = (days, day, count) =>
+      count === 0
+        ? days
+        : nextDays(
+            [...days, new Date(day)],
+            new Date(day.setDate(day.getDate() + 1)),
+            count - 1
+          );
+
+    const startOfPrevMonth = new Date(start);
+    startOfPrevMonth.setDate(startOfPrevMonth.getDate() - start.getDay());
+
+    const days = [
+      ...prevDays([], startOfPrevMonth, start.getDay()),
+      ...addDays([], start, end, 1),
+      ...nextDays([], end, 35 - start.getDay() - end.getDate()),
+    ];
+
+    return days;
+  };
 
   return (
-    <div className="calender-container">
-      <nav className="calendar-navbar">
-        <div className="nav-left">
-          <h1>
-            {Dates[0].filter((f) => f.index === moment().day())[0]?.kun},{" "}
-            {moment().date()}{" "}
-            {Dates[1].filter((f) => f.index === moment().month())[0]?.oy}{" "}
-            {moment().year()} г.
-          </h1>
-          <button className="nav-arrow">
-            <icon.ArrowLeft />
-          </button>
-          <button className="nav-arrow">
-            <icon.ArrowRight />
-          </button>
-          <button className="nav-btn">Сегодня</button>
-          <button className="nav-btn">
-            Все <icon.ArrowDown />
-          </button>
-        </div>
-        <div className="nav-right">
+    <div className="calendar">
+      <div className="calendar-header">
+        <Flex className="calendar-header-left">
+          <h2 onClick={() => {
+            console.log(calendarRef.current.click());
+          }}>
+            {currentDate.toLocaleString("ru", {
+              weekday: "short",
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+            })}
+          </h2>
+          <DatePickerInput
+            value={currentDate}
+            onChange={setCurrentDate}
+            dropdownType="modal"
+            ref={calendarRef}
+            display="none"
+          />
           <button
-            className={arrowActive === "day" ? "active" : ""}
-            onClick={() => changeArrow("day")}
-          >
-            День
-          </button>
-          <button
-            className={arrowActive === "week" ? "active" : ""}
-            onClick={() => changeArrow("week")}
-          >
-            Неделя
-          </button>
-          <button
-            className={arrowActive === "month" ? "active" : ""}
-            onClick={() => changeArrow("month")}
-          >
-            Месяц
-          </button>
-        </div>
-      </nav>
-     
-      {arrowActive === "day" ? (
-        <table className="table-calendar">
-          <tbody>
-            {dayArray.map((item, index) => {
-              return (
-                <tr key={index}>
-                  <td className="td-time">{item.time}</td>
-                  <td className="td-input">
-                    {item.data.description === "" ? "" : item.data.description}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      ) : null}
-      {arrowActive === "week" ? (
-        <div className="table-calendar">
-          <div className="tabel-head">
-            {weekArray[0].children.map((item, index) => {
-              return (
-                <h1 key={index}>
-                  {" "}
-                  <span
-                    className={
-                      item.day === moment().date().toString() ? "active" : ""
-                    }
-                  >
-                    {item.day}
-                  </span>{" "}
-                  <br /> {item.title}
-                </h1>
-              );
-            })}
-          </div>
-          <div className="tabel-body">
-            {weekArray[1].children.map((item, index) => {
-              return (
-                <div className="tr" key={index}>
-                  <td className="td-time">{item.time}</td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      ) : null}
-      {arrowActive === "month" ? (
-        <div className="table-calendar2">
-          <div className="table-calendar2-head">
-            {weekArray[0].children.map((item, index) => {
-              return (
-                <h1
-                  key={index}
-                  className={
-                    item.day === moment().date().toString() ? "active" : ""
-                  }
-                >
-                  {item.title}
-                </h1>
-              );
-            })}
-          </div>
-          <div className="table-calendar2-body">
-            {monthArray.map((item, index) => {
-              return (
-                <div key={index} className="body-card">
-                  <h1>{item.date}</h1>
-                  <div
-                    className={
-                      item.data[index]?.description ? "description" : ""
-                    }
-                  >
-                    <p>
-                      <span>{item.data[index]?.time}</span>
-                      {item.data[index]?.description}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      ) : null}
-       {/* <table className="table-calendar">
-        <tbody>
-            {
-              dayArray.map((item,index)=>{
-                return <tr  key={index}>
-                  <td className="td-time">{item.time}</td>
-                  <td className="td-input">{item.data.description === ""?"":item.data.description}</td>
-                </tr>
-              })
+            onClick={() =>
+              setCurrentDate(
+                new Date(currentDate.setDate(currentDate.getDate() - 1))
+              )
             }
-        </tbody>
-      </table>
-        <div className="table-calendar">
-          <div className="tabel-head">
-               <h1></h1>
-              {weekArray[0].children.map((item,index)=>{
-                return <h1 key={index}> <span className={item.day === moment().date().toString() ? "active":""}>{item.day}</span> <br /> {item.title}</h1>
-              })}
-          </div>
-          <div className="tabel-body">
-          {
-              weekArray[1].children.map((item,index)=>{
-                return <div className="tr" key={index}>
-                  <td className="td-time">{item.time}</td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                  <td className="td-input"></td>
-                </div>
-              })
+          >
+            <span role="img" aria-label="arrow-left">
+              ⬅️
+            </span>
+          </button>
+
+          <button
+            onClick={() =>
+              setCurrentDate(
+                new Date(currentDate.setDate(currentDate.getDate() + 1))
+              )
             }
-          </div>
+          >
+            <span role="img" aria-label="arrow-right">
+              ➡️
+            </span>
+          </button>
+          <button onClick={() => setCurrentDate(new Date())}>Сегодня</button>
+        </Flex>
+        <div>
+          <button onClick={() => setView("day")}>День</button>
+          <button onClick={() => setView("week")}>Неделя</button>
+          <button onClick={() => setView("month")}>Месяц</button>
         </div>
-        <div className="table-calendar2">
-          <div className="table-calendar2-head">
-            {weekArray[0].children.map((item,index)=>{
-              return <h1 key={index} className={item.day === moment().date().toString() ? "active" : ""}>{item.title}</h1>
-            })}
-          </div>
-          <div className="table-calendar2-body">
-            {monthArray.map((item,index)=>{
-              return <div key={index} className="body-card">
-                <h1>{item.date}</h1>
-                <div className={item.data[index]?.description ? "description":""}><p><span>{item.data[index]?.time}</span>{item.data[index]?.description}</p></div>
+      </div>
+      {view === "day" && (
+        <div className="calendar-grid">
+          {hoursInDay().map((time, i) => (
+            <div key={i} className="calendar-hour hour-inner">
+              <span>{time}</span>
+            </div>
+          ))}
+          {getEventsForCurrentDay().map((event, index) => (
+            <div
+              key={index}
+              className="calendar-event"
+              style={{
+                top: `${
+                  new Date(event.start).getHours() * 60 +
+                  new Date(event.start).getMinutes()
+                }px`,
+                height: `${
+                  (new Date(event.end) - new Date(event.start)) / 60000 - 4
+                }px`,
+                backgroundColor: event.color,
+              }}
+            >
+              <strong>{event.title}</strong>
+              <br />
+              {formatTime(new Date(event.start))} -{" "}
+              {formatTime(new Date(event.end))}
+            </div>
+          ))}
+        </div>
+      )}
+      {view === "week" && (
+        <div className="calendar-grid-week">
+          <div className="calendar-hours-column">
+            {hoursInDay().map((time, i) => (
+              <div key={i} className="calendar-hour hour-inner">
+                <span>{time}</span>
               </div>
-            })}
+            ))}
           </div>
-        </div> */}
+          {daysInWeek.map((day, dayIndex) => (
+            <div key={day} className="calendar-day-week">
+              {hoursInDay().map((_, hourIndex) => (
+                <div key={hourIndex} className="calendar-hour-week hour-inner">
+                  {getEventsForCurrentWeek()
+                    .filter((event) => {
+                      const eventDate = new Date(event.start);
+                      return (
+                        eventDate.getDay() === dayIndex &&
+                        eventDate.getHours() === hourIndex
+                      );
+                    })
+                    .map((event, eventIndex) => (
+                      <div
+                        key={eventIndex}
+                        className="calendar-event-week"
+                        style={{
+                          top: `${new Date(event.start).getMinutes()}px`,
+                          height: `${
+                            (new Date(event.end) - new Date(event.start)) /
+                              60000 -
+                            4
+                          }px`,
+                          backgroundColor: event.color,
+                        }}
+                      >
+                        <strong>{event.title}</strong>
+                        <br />
+                        {formatTime(new Date(event.start))} -{" "}
+                        {formatTime(new Date(event.end))}
+                      </div>
+                    ))}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+      {view === "month" && (
+        <div className="calendar-grid-month">
+          {daysInMonth(currentDate).map((day, i) => (
+            <div
+              key={i}
+              className={`calendar-day-month ${
+                day.getMonth() !== currentDate.getMonth() ? "other-month" : ""
+              }`}
+            >
+              <span>{day.getDate()}</span>
+              {getEventsForCurrentMonth()
+                .filter(
+                  (event) =>
+                    new Date(event.start).getDate() === day.getDate() &&
+                    new Date(event.start).getMonth() === day.getMonth()
+                )
+                .map((event, index) => (
+                  <div
+                    key={index}
+                    className="calendar-event-month"
+                    style={{
+                      backgroundColor: event.color,
+                    }}
+                  >
+                    <strong>{event.title}</strong>
+                    <br />
+                    {formatTime(new Date(event.start))} -{" "}
+                    {formatTime(new Date(event.end))}
+                  </div>
+                ))}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
     
   );
 };
 
-export default Calendar;
-
-
+export default CalendarUI;
