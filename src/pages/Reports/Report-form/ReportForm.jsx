@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback,useEffect,useState } from "react";
 import * as icon from "../../../assets/svgs/index";
 import { useUser } from "../../../redux/useSelector";
 import "./ReportForm.css";
@@ -15,11 +15,10 @@ const ReportForm = () => {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [file, setFile] = useState(null || "");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState("Принято");
   const [comments, setComments] = useState("");
   const [error, setError] = useState(false);
 
-  const statusRef = useRef(null);
 
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
@@ -117,13 +116,13 @@ const ReportForm = () => {
       }
     }
   };
-  useEffect(() => {
-    statusRef.current.style.Display = status_users.filter(
-      (f) => f === user?.user?.roles[0]?.name
-    )[0]
-      ? "block"
-      : "none";
-  }, [status, user]);
+  useEffect(()=>{
+    if(user.user.name.includes("Support")){
+      console.log("none");
+    }else{
+      console.log("block");
+    }
+  },[user])
   return (
     <div className="ReportForm-container">
       <div className="ReportForm-head">
@@ -228,7 +227,7 @@ const ReportForm = () => {
               className={error ? (file === null ? "error-input" : "") : ""}
             />
           </div>
-          <div className="input-name" ref={statusRef}>
+          <div className="input-name" style={{display:user.user.name.includes("Support")?"none":"block"}}>
             <label
               htmlFor="name"
               className={error ? (status === "" ? "error" : "") : ""}

@@ -58,7 +58,7 @@ const Reports = () => {
         if (x?.child.length === 0) {
           return {
             ...x,
-            child: report.filter((f) => f.user_name.includes(x.title)),
+            child: report.filter((f) => f?.user_name?.includes(x.title)),
           };
         }
         return x;

@@ -6,7 +6,6 @@ import * as icon from "../../assets/svgs/index";
 import { useDispatch } from "react-redux";
 import { clearUser } from "../../redux/userSlice";
 import User from "../../assets/images/Avatar.png";
-import { hover } from "@syncfusion/ej2-react-schedule";
 
 const SideBar = ({ deleted, sideBar, setsideBar, bar, setBar }) => {
   const [user, setUser] = useState(false);
@@ -109,7 +108,10 @@ const SideBar = ({ deleted, sideBar, setsideBar, bar, setBar }) => {
           <li className="li">
             <icon.Icon3 /> <button>Тех.хаб</button>
           </li>
-          <li onClick={() => LogOut()} className="li logOutLi">
+          <li onClick={() => {
+            LogOut()
+            navigate("/")
+          }} className="li logOutLi">
             <NavLink style={{ color: "#565E6C" }} to={"/"}>
               Выход
             </NavLink>

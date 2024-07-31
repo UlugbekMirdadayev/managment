@@ -35,6 +35,11 @@
   gap: 30px;
   overflow: auto !important;
 }
+@media screen and (min-width:1800px) {
+  .tasks-wrapper {
+    width: 100% !important;
+  }
+}
 
 .tasks-wrapper .task-column {
   width: 324px;

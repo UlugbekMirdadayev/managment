@@ -46,9 +46,13 @@ const TaskForm = () => {
       finishDate === "" ||
       file === null ||
       forward === "" ||
-      describe === ""
+      describe === "" ||
+      new Date(finishDate) < new Date(startDate)
     ) {
       setError(true);
+      if(new Date(finishDate) < new Date(startDate)){
+        alert("datelar hato")
+      }
     } else {
       let body = new FormData();
       body.append('task_name', name);

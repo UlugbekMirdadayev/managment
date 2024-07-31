@@ -10,7 +10,7 @@ const Router = () => {
   const navigate = useNavigate("");
   useEffect(() => {
     if (!token && !user) {
-      navigate("/login");
+      navigate("/");
     }
   }, [token, navigate, user]);
   return (
