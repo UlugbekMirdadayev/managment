@@ -27,7 +27,7 @@
 }
 
 .tasks-wrapper {
-  width: 1200px !important;
+  width: 1267px !important;
   height: 100% !important;
   display: flex;
   align-items: start;
@@ -35,7 +35,7 @@
   gap: 30px;
   overflow: auto !important;
 }
-@media screen and (min-width:1800px) {
+@media screen and (min-width:1700px) {
   .tasks-wrapper {
     width: 100% !important;
   }
@@ -57,9 +57,11 @@
 .tasks-wrapper .task-column-title span {
   width: 30px;
   height: 30px;
-  padding: 3px 10px 4px 10px;
   margin-right: 3px;
   border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .tasks-wrapper .Делать .task-column-title span {
   background-color: #379ae6;

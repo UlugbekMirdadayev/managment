@@ -18,11 +18,14 @@ const User = () => {
       dispatch(setLoader(true))
       getRequest("users", token)
         .then(({ data }) => {
-          setUsers(data.data.map((i)=>
-          {
-            return {...i,arrow:false}
-          }));
+          // setUsers(data.data.map((i)=>
+          // {
+          //   return {...i,arrow:false}
+          // }));
         dispatch(setLoader(false))
+        console.log(data);
+        
+        
           
           toast.success("Ma`lumotlar keldi");
         })

@@ -62,7 +62,7 @@ const ReportForm = () => {
         postRequest("reports", data, token)
           .then((data) => {
             console.log(data);
-            toast.success("report yasaldi");
+            toast.success("Отчеты создан");
             setType("");
             setReport("");
             setDescription("");

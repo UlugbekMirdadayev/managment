@@ -43,7 +43,7 @@ const Task = () => {
     dispatch(setLoader(true));
     getRequest("tasks", token)
       .then(({ data }) => {
-        toast.success("Tasklar keldi");
+        toast.success("Задачи пришол");
         dispatch(setTask(data.data));
         dispatch(setLoader(false));
         console.log(data);

@@ -67,7 +67,7 @@ const TaskForm = () => {
       postRequest("tasks",body,token).then(({data})=>{
        dispatch(clearUpdate())
        console.log(data);
-       toast.success("Task yasaldi");
+       toast.success("Отчеты создан");
        dispatch(setLoader(false))
        setName("");
        setLevel("Высокий")
