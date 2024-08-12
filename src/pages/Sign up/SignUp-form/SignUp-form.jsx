@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUser } from "../../../redux/userSlice";
@@ -9,7 +8,7 @@ const SignUpForm = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
-  const [loader,setLoader] = useState(false)
+  const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate("");
   const handleLogin = (e) => {
@@ -20,19 +19,17 @@ const SignUpForm = () => {
       let data = new FormData();
       data.append("email", name);
       data.append("password", password);
-      setLoader(true)
+      setLoader(true);
       post("auth/login", data)
         .then(({ data }) => {
-          toast.success("Login bo`ldi");
           localStorage.setItem("token", data.token);
           dispatch(setUser(data));
           navigate("/");
-      setLoader(false)
+          setLoader(false);
         })
         .catch((error) => {
           console.log(error);
-          toast.error(error.message ? error.message : "Xatolik yuz berdi");
-      setLoader(false)
+          setLoader(false);
         });
       setError(false);
     }
@@ -74,9 +71,13 @@ const SignUpForm = () => {
           className={error ? (password === "" ? "error" : "") : ""}
         />
       </div>
-      <button type="submit" disabled={loader}>  <div className={`loader-user ${loader ? "active-loader":""}`} >
-        <div className="loader"></div>
-      </div> Войти</button>
+      <button type="submit" disabled={loader}>
+        {" "}
+        <div className={`loader-user ${loader ? "active-loader" : ""}`}>
+          <div className="loader"></div>
+        </div>{" "}
+        Войти
+      </button>
     </form>
   );
 };

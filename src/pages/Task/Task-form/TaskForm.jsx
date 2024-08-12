@@ -1,7 +1,6 @@
-import React, {  useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import * as icon from "../../../assets/svgs/index";
 import "./TaskForm.css";
-import { toast } from "react-toastify";
 import { getRequest, postRequest } from "../../../service/api";
 import { useDispatch } from "react-redux";
 import { setLoader } from "../../../redux/loaderSlice";
@@ -21,22 +20,20 @@ const TaskForm = () => {
   const [forward, setForward] = useState(created_by[0]);
   const [describe, setDiscribe] = useState("");
   const [error, setError] = useState(false);
-  const token = localStorage.getItem("token")
-  const dispatch = useDispatch()
+  const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
   const getTask = useCallback(() => {
-    dispatch(setLoader(true))
-    getRequest("tasks",token)
-    .then(({data})=>{
-     toast.success("Tasklar keldi")
-     dispatch(setTask(data.data))
-     dispatch(setLoader(false))
-    }).catch((err)=>{
-      console.log(err);
-      toast.error(err.message ? err.message : "Xatlik yuz berdi")
-      dispatch(setLoader(false))
-
-    })
-  },[token,dispatch])
+    dispatch(setLoader(true));
+    getRequest("tasks", token)
+      .then(({ data }) => {
+        dispatch(setTask(data.data));
+        dispatch(setLoader(false));
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(setLoader(false));
+      });
+  }, [token, dispatch]);
   const handleCreate = () => {
     if (
       name === "" ||
@@ -50,56 +47,56 @@ const TaskForm = () => {
       new Date(finishDate) < new Date(startDate)
     ) {
       setError(true);
-      if(new Date(finishDate) < new Date(startDate)){
-        alert("datelar hato")
+      if (new Date(finishDate) < new Date(startDate)) {
+        alert("Дата окончания не может быть меньше даты начала");
       }
     } else {
       let body = new FormData();
-      body.append('task_name', name);
-      body.append('level', level);
-      body.append('status', status);
-      body.append('start_date', startDate);
-      body.append('end_date', finishDate); 
-      body.append('description',describe);
-      body.append('file',file);
-      body.append('responsible_person',forward);
-      dispatch(setLoader(true))
-      postRequest("tasks",body,token).then(({data})=>{
-       dispatch(clearUpdate())
-       console.log(data);
-       toast.success("Отчеты создан");
-       dispatch(setLoader(false))
-       setName("");
-       setLevel("Высокий")
-       setStatus("")
-       setStartDate("")
-       setFinishDate("")
-      setDiscribe("")
-      setFile(null)
-      setForward("")
-      dispatch(setModal(false))
-      getTask()
-      }).catch((err)=>{
-        console.log(err);
-        toast.error(err.message ? err.message : "Xatolik yuz berdi")
-       dispatch(setLoader(false))
-      })
+      body.append("task_name", name);
+      body.append("level", level);
+      body.append("status", status);
+      body.append("start_date", startDate);
+      body.append("end_date", finishDate);
+      body.append("description", describe);
+      body.append("file", file);
+      body.append("responsible_person", forward);
+      dispatch(setLoader(true));
+      postRequest("tasks", body, token)
+        .then(({ data }) => {
+          dispatch(clearUpdate());
+          console.log(data);
+          dispatch(setLoader(false));
+          setName("");
+          setLevel("Высокий");
+          setStatus("");
+          setStartDate("");
+          setFinishDate("");
+          setDiscribe("");
+          setFile(null);
+          setForward("");
+          dispatch(setModal(false));
+          getTask();
+        })
+        .catch((err) => {
+          console.log(err);
+          dispatch(setLoader(false));
+        });
       setError(false);
     }
   };
-  const update_task = useUpdate()
-  useEffect(()=>{
-     if(update_task?.id){
-      setName(update_task.task_name)
-      setLevel(update_task.level) 
-      setStatus(update_task.status)
-      setStartDate(update_task.start_date)
-      setFinishDate(update_task.end_date)
-      setDiscribe(update_task.description)
-      setFile(update_task.file)
-      setForward(update_task.created_by)
-     }
-  },[update_task])
+  const update_task = useUpdate();
+  useEffect(() => {
+    if (update_task?.id) {
+      setName(update_task.task_name);
+      setLevel(update_task.level);
+      setStatus(update_task.status);
+      setStartDate(update_task.start_date);
+      setFinishDate(update_task.end_date);
+      setDiscribe(update_task.description);
+      setFile(update_task.file);
+      setForward(update_task.created_by);
+    }
+  }, [update_task]);
   const handleUpdate = () => {
     if (
       name === "" ||
@@ -114,37 +111,35 @@ const TaskForm = () => {
       setError(true);
     } else {
       const body = new FormData();
-      body.append('task_name', name);
-      body.append('level', level);
-      body.append('status', status);
-      body.append('start_date', startDate);
-      body.append('end_date', finishDate); 
-      body.append('description',describe);
-      body.append('file',file);
-      body.append('responsible_person', forward);
-      dispatch(setLoader(true))
-      postRequest("taskUpdate/" + update_task?.id,body,token).then(({data})=>{
-       dispatch(clearUpdate())
-       console.log(data);
-       toast.success("Task o`zgartirildi");
-       dispatch(setLoader(false))
-       setName("");
-       setLevel("")
-       setStartDate("")
-       setFinishDate("")
-      setDiscribe("")
-      dispatch(setModal(false))
-      getTask()
-      }).catch((err)=>{
-        console.log(err);
-        toast.error(err.message ? err.message : "Xatolik yuz berdi")
-       dispatch(setLoader(false))
-      })  
+      body.append("task_name", name);
+      body.append("level", level);
+      body.append("status", status);
+      body.append("start_date", startDate);
+      body.append("end_date", finishDate);
+      body.append("description", describe);
+      body.append("file", file);
+      body.append("responsible_person", forward);
+      dispatch(setLoader(true));
+      postRequest("taskUpdate/" + update_task?.id, body, token)
+        .then(({ data }) => {
+          dispatch(clearUpdate());
+          console.log(data);
+          dispatch(setLoader(false));
+          setName("");
+          setLevel("");
+          setStartDate("");
+          setFinishDate("");
+          setDiscribe("");
+          dispatch(setModal(false));
+          getTask();
+        })
+        .catch((err) => {
+          console.log(err);
+          dispatch(setLoader(false));
+        });
       setError(false);
     }
   };
-  
-
 
   return (
     <div className="TaskForm-container">

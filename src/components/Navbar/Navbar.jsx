@@ -6,11 +6,13 @@ import { Plus } from "../../assets/svgs";
 import User from "../../assets/images/Avatar.png";
 import { useDispatch } from "react-redux";
 import { setModal } from "../../redux/modalSlice";
+import { setModalCalendar } from "../../redux/modalCalendarSlice";
 
-const Navbar = ({setsideBar, bar, setBar }) => {
+const Navbar = ({ setsideBar, bar, setBar }) => {
   const { pathname } = useLocation();
   const user = JSON.parse(localStorage.getItem("user"));
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
 
   return (
     <header className="nav-conatiner">
@@ -40,7 +42,10 @@ const Navbar = ({setsideBar, bar, setBar }) => {
                 ? "delete-btn"
                 : "btn"
             }`}
-            onClick={() => dispatch(setModal(true))}
+            onClick={() => {
+              dispatch(setModal(true));
+              dispatch(setModalCalendar(pathname === "/"));
+            }}
             style={{
               display:
                 deletePlus.filter((f) => f === pathname)[0] === pathname
@@ -54,16 +59,17 @@ const Navbar = ({setsideBar, bar, setBar }) => {
         </div>
         <div className="nav-right">
           <button
-             onClick={() => dispatch(setModal(true))}
+            onClick={() => {
+              dispatch(setModal(true));
+              dispatch(setModalCalendar(pathname === "/"));
+            }}
             style={{
               display:
                 deletePlus.filter((f) => f === pathname)[0] === pathname
                   ? "none"
                   : "flex",
-            ":hover":{
-            }}}
+            }}
             className="btn"
-            
           >
             <Plus />
             Создать

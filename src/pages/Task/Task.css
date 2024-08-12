@@ -15,7 +15,7 @@
   justify-content: space-between;
   height: 32px;
   background-color: #f1f2fd;
-  font-family: Lato, sans-serif;
+  
   font-size: 12px;
   font-weight: 400;
   color: #535ce8;
@@ -27,7 +27,7 @@
 }
 
 .tasks-wrapper {
-  width: 1267px !important;
+  width: 1200px !important;
   height: 100% !important;
   display: flex;
   align-items: start;
@@ -35,21 +35,24 @@
   gap: 30px;
   overflow: auto !important;
 }
-@media screen and (min-width:1700px) {
+@media screen and (min-width:1800px) {
   .tasks-wrapper {
     width: 100% !important;
+  }
+  .tasks-wrapper .task-column {
+    min-width: 324px;
   }
 }
 
 .tasks-wrapper .task-column {
-  width: 324px;
+  flex: 1;
   height: 100% !important;
   padding: 20px;
   background-color: #F8F9FA;
   border: 1px solid #F3F4F6;
 }
 .tasks-wrapper .task-column h1 {
-  font-family: Lato, sans-serif;
+  
   font-size: 25px !important;
   font-weight: 400;
   line-height: 30px;
@@ -57,11 +60,13 @@
 .tasks-wrapper .task-column-title span {
   width: 30px;
   height: 30px;
+  padding: 3px 10px 4px 10px;
   margin-right: 3px;
   border-radius: 50%;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 14px;
 }
 .tasks-wrapper .Делать .task-column-title span {
   background-color: #379ae6;
@@ -99,14 +104,14 @@
   width: 89% !important;
 }
 .tasks-wrapper .task-card .card-right .card-right-head h2 {
-  font-family: Lato, sans-serif;
+  
   font-size: 18px !important;
   font-weight: 700;
   line-height: 26.3px;
   text-align: left;
 }
 .tasks-wrapper .task-card .card-right .card-right-head p {
-  font-family: Lato, sans-serif;
+  
   font-size: 12px;
   font-weight: 400;
   line-height: 20px;
@@ -115,7 +120,7 @@
 .tasks-wrapper .task-card .card-right .card-right-body p {
   display: flex;
   align-items: center;
-  font-family: Lato, sans-serif;
+  
   font-size: 12px;
   font-weight: 400;
   line-height: 19.28px;
@@ -139,12 +144,12 @@
   justify-content: space-between;
   font-size: 12px;
   margin-top: 10px;
-  font-family: Lato, sans-serif;
+  
   font-size: 10px;
   font-weight: 400;
 }
 .tasks-wrapper .task-card .card-right .card-right-footer p span {
-  font-family: Lato, sans-serif;
+  
   font-size: 12px;
   font-weight: 400;
   line-height: 19.28px;

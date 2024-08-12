@@ -18,7 +18,7 @@
   width: 210px;
   height: 40px;
   padding: 8px 16px 8px 16px;
-  font-family: Lato, sans-serif;
+  
   font-size: 14px;
   font-weight: 700;
   gap: 15px;
@@ -40,13 +40,13 @@
   padding: 8px 16px 8px 16px;
   gap: 15px;
   margin-top: 20px;
-  font-family: Lato, sans-serif;
+  
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
 }
 .sidebar ul .li button {
-  font-family: Lato, sans-serif;
+  
   font-size: 14px;
   font-weight: 700;
   gap: 15px;
@@ -56,45 +56,10 @@
   border: none;
   cursor: pointer;
 }
-.sidebar .firstUl .li::before{
-  background: #535ce8;
-  content: "";
-  inset: 0;
-  position: absolute;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.5s ease-in-out;
-  z-index: -1;  
-}
-.sidebar .firstUl .li:hover::before {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-.sidebar .firstUl .li:hover,.sidebar .firstUl .li:hover svg {
-  color: white !important;
-}
+
 .logOutLi {
   position: relative;
 }
-.logOutLi::before {
-   background: red;
-   content: "";
-   inset: 0;
-   position: absolute;
-   transform: scaleX(0);
-   transform-origin: right;
-   transition: transform 0.5s ease-in-out;
-   z-index: -1;
-}
-.logOutLi:hover::before{
-  transform: scaleX(1);
-  transform-origin: left;
-}
-.logOutLi:hover a {
-  color: white;
-}
-
-
 .user-list {
   width: 100%;
 }
@@ -106,7 +71,7 @@
   width: 210px;
   height: 40px;
   padding: 8px 16px 8px 16px;
-  font-family: Lato, sans-serif;
+  
   font-size: 14px;
   font-weight: 700;
   gap: 15px;
@@ -130,7 +95,7 @@
   width: 200px !important;
   height: 30px;
   padding: 8px 16px 8px 16px;
-  font-family: Lato, sans-serif;
+  
   font-size: 14px;
   font-weight: 700;
   gap: 15px;
@@ -144,7 +109,7 @@
 }
 
 .sidebar-user h3 {
-  font-family: Lato, sans-serif;
+  
   font-size: 16px;
   font-weight: 400;
   line-height: 26px;
@@ -152,7 +117,7 @@
   color: #323842;
 }
 .sidebar-user h3 span {
-  font-family: Lato, sans-serif;
+  
   display: block;
   font-size: 12px;
   font-weight: 400;
@@ -167,19 +132,18 @@
     width: 100%;
     height: 120%;
     position: absolute;
-    z-index: 1;
+    z-index: 3;
     padding:15px 20px 20px 30px;
-    left: -150%;
+    left: -1000px;
     transition: all 0.4s;
+    background-color: #fff;
   }
   .active-sidebar {
     left: 0;
   }
   .sidebar ul {
     height: 80vh;
-  }
-  .sidebar ul li {
-    width: 300px !important;
+    width: auto
   }
   .sidebar-user {
     display: flex;
@@ -190,8 +154,7 @@
   .sidebar-head {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    width: 300px;
+    gap: 20px;
   }
 
   .user-list ul.active {

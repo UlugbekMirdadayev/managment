@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import * as icon from "../../../assets/svgs/index";
 import "./createUser.css";
 import { postRequest } from "../../../service/api";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLoader } from "../../../redux/loaderSlice";
@@ -21,7 +20,7 @@ const AddUser = () => {
   const [error, setError] = useState(false);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const HandleCreateUser = (e) => {
     e.preventDefault();
     if (
@@ -41,11 +40,10 @@ const AddUser = () => {
       data.append("telegram", telegram);
       data.append("password", password);
       data.append("role", roles);
-    dispatch(setLoader(true))
+      dispatch(setLoader(true));
       postRequest("users", data, token)
         .then(({ data }) => {
           console.log(data);
-          toast.success("User yaratildi");
           setName("");
           setLastName("");
           setSurName("");
@@ -54,18 +52,16 @@ const AddUser = () => {
           setLogin("");
           setPassword("");
           navigate("/users");
-          toast.success("User yaratildi")
-      dispatch(setLoader(false))
+          dispatch(setLoader(false));
         })
         .catch((err) => {
           console.log(err);
-          toast.error(err.message ? err.message : "Xatolik yuz berdi");
-      dispatch(setLoader(false))
+          dispatch(setLoader(false));
         });
       setError(false);
     }
   };
-  let updateUser = useUpdate()
+  let updateUser = useUpdate();
   useEffect(() => {
     if (updateUser) {
       setName(updateUser?.name?.split(" ")[1]);
@@ -94,11 +90,10 @@ const AddUser = () => {
       data.append("telegram", telegram);
       data.append("password", password);
       data.append("role", roles);
-      dispatch(setLoader(true))
+      dispatch(setLoader(true));
       postRequest("userUpdate/" + updateUser.id, data, token)
         .then(({ data }) => {
-          dispatch(clearUpdate())
-          toast.success("User o`zgar tirildi");
+          dispatch(clearUpdate());
           setName("");
           setLastName("");
           setSurName("");
@@ -107,11 +102,11 @@ const AddUser = () => {
           setLogin("");
           setPassword("");
           navigate("/users");
-         dispatch(setLoader(false))
+          dispatch(setLoader(false));
         })
         .catch((err) => {
           console.log(err);
-      dispatch(setLoader(false))
+          dispatch(setLoader(false));
         });
       setError(false);
     }
@@ -197,7 +192,7 @@ const AddUser = () => {
                 setArrow(!arrow);
               }}
             >
-             {roles === undefined ? "manager":roles}
+              {roles === undefined ? "manager" : roles}
               <button
                 className="arrow"
                 type="button"
@@ -257,7 +252,7 @@ const AddUser = () => {
           </label>
           <br />
           <input
-            type='email'
+            type="email"
             id="login"
             value={login}
             onChange={(e) => setLogin(e.target.value)}
@@ -284,7 +279,9 @@ const AddUser = () => {
           <div></div>
           <div className="form-actions">
             {updateUser?.name ? (
-              <button onClick={handleUpdate} type="button">update</button>
+              <button onClick={handleUpdate} type="button">
+                update
+              </button>
             ) : (
               <button type="sumbit">Сохранить</button>
             )}

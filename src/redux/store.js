@@ -1,4 +1,3 @@
-
 import { configureStore } from "@reduxjs/toolkit";
 import user from "./userSlice";
 import calendar from "./calendarSlice";
@@ -7,6 +6,7 @@ import loader from "./loaderSlice";
 import task from "./taskSlice";
 import update from "./updateSlice";
 import modal from "./modalSlice";
+import modalCalendar from "./modalCalendarSlice";
 
 export default configureStore({
   reducer: {
@@ -16,6 +16,7 @@ export default configureStore({
     loader,
     task,
     update,
-    modal, 
+    modal,
+    modalCalendar
   },
 });

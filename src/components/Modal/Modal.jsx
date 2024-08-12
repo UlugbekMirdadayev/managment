@@ -8,17 +8,17 @@ import { setModal } from "../../redux/modalSlice";
 const Modal = () => {
   const { pathname } = useLocation();
   const ModalData = modals.filter((f) => f.path === pathname);
-  const modal = useModal()
-  const dispatch = useDispatch()
-  useEffect(()=>{
-    if(ModalData.length === 0){
-       dispatch(setModal(false))
+  const modal = useModal();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (ModalData.length === 0) {
+      dispatch(setModal(false));
     }
-  },[ModalData.length,dispatch])
+  }, [ModalData.length, dispatch]);
   return (
     <div
       className={`Modal-container ${
-        modal ? ((ModalData.length === 0) ? ""  : "active") : ""
+        modal ? (ModalData.length === 0 ? "" : "active") : ""
       }`}
     >
       {ModalData.map((item, index) => (

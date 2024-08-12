@@ -1,10 +1,9 @@
-import React, { useCallback,useEffect,useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import * as icon from "../../../assets/svgs/index";
 import { useUser } from "../../../redux/useSelector";
 import "./ReportForm.css";
 import { status_users } from "../../../utils/data";
 import { postRequest } from "../../../service/api";
-import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setModal } from "../../../redux/modalSlice";
 import { setLoader } from "../../../redux/loaderSlice";
@@ -19,7 +18,6 @@ const ReportForm = () => {
   const [comments, setComments] = useState("");
   const [error, setError] = useState(false);
 
-
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
   const user = useUser();
@@ -27,14 +25,12 @@ const ReportForm = () => {
     dispatch(setLoader(true));
     getReports("reports", token)
       .then((reponsive) => {
-        toast.success("Отчеты пришол");
         dispatch(setReport(reponsive.data.data));
         dispatch(setLoader(false));
         console.log(reponsive.data.data);
       })
       .catch((error) => {
         console.error("Xato", error);
-        toast.error(error.message ? error.message : "Xatolik yuz berdi");
         dispatch(setLoader(false));
       });
   }, [token, dispatch]);
@@ -62,7 +58,6 @@ const ReportForm = () => {
         postRequest("reports", data, token)
           .then((data) => {
             console.log(data);
-            toast.success("Отчеты создан");
             setType("");
             setReport("");
             setDescription("");
@@ -75,7 +70,6 @@ const ReportForm = () => {
           })
           .catch((err) => {
             console.log(err);
-            toast.error(err.message ? err.message : "Xatolik yuz berdi");
           });
         setError(false);
       }
@@ -100,7 +94,6 @@ const ReportForm = () => {
         postRequest("reports", data, token)
           .then((data) => {
             console.log(data);
-            toast.success("report yasaldi");
             setType("");
             setReport("");
             setDescription("");
@@ -110,19 +103,18 @@ const ReportForm = () => {
           })
           .catch((err) => {
             console.log(err);
-            toast.error(err.message ? err.message : "Xatolik yuz berdi");
           });
         setError(false);
       }
     }
   };
-  useEffect(()=>{
-    if(user.user.name.includes("Support")){
+  useEffect(() => {
+    if (user.user.name.includes("Support")) {
       console.log("none");
-    }else{
+    } else {
       console.log("block");
     }
-  },[user])
+  }, [user]);
   return (
     <div className="ReportForm-container">
       <div className="ReportForm-head">
@@ -227,7 +219,12 @@ const ReportForm = () => {
               className={error ? (file === null ? "error-input" : "") : ""}
             />
           </div>
-          <div className="input-name" style={{display:user.user.name.includes("Support")?"none":"block"}}>
+          <div
+            className="input-name"
+            style={{
+              display: user.user.name.includes("Support") ? "none" : "block",
+            }}
+          >
             <label
               htmlFor="name"
               className={error ? (status === "" ? "error" : "") : ""}

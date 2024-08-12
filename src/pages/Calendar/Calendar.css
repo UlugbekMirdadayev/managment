@@ -3,19 +3,24 @@
 }
 
 .calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 24px 16px;
   box-shadow: 0px 2px 5px 0px rgba(23, 26, 31, 0.17),
     0px 0px 2px 0px rgba(23, 26, 31, 0.2);
   z-index: 1;
   position: relative;
 
+  @media screen and (max-width:768px) {
+    padding: 10px;
+  }
+
   .calendar-header-left {
     display: flex;
     align-items: center;
     gap: 10px;
+
+    @media screen and (max-width:768px) {
+      flex-wrap: wrap;
+    }
   }
 
   .calendar-picker {
@@ -30,8 +35,87 @@
     white-space: nowrap;
     cursor: pointer;
     transition: 300ms ease-in-out;
+
+    &.week-view-calendar-current-date {
+      width: 150px;
+    }
+
     &:hover {
       color: rgb(83, 92, 232);
+    }
+
+    @media screen and (max-width: 768px) {
+      font-size: 14px;
+      width: 140px;
+    }
+  }
+
+  .week-days-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-left: 100px;
+    margin-top: 20px;
+    cursor: pointer;
+
+    @media screen and (max-width: 768px) {
+      margin-left: 0;
+    }
+
+    .week-day-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 9px;
+
+      .index {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        transition: 300ms ease-in-out;
+        border: 1px solid transparent;
+        color: rgb(23, 26, 31);
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 26px;
+        text-align: center;
+
+        &:hover {
+          background: rgb(83, 92, 232);
+          color: white;
+        }
+
+        @media screen and (max-width: 768px) {
+          width: 30px;
+          height: 30px;
+          font-size: 14px;
+        }
+      }
+
+      .day-name {
+        color: rgb(23, 26, 31);
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 22px;
+      }
+
+      &.today-day {
+        .index {
+          background: rgb(83, 92, 232);
+          color: white;
+        }
+      }
+
+      &.current-day {
+        .index {
+          border-color: rgb(83, 92, 232);
+          background: rgb(241, 242, 253);
+          color: rgb(83, 92, 232);
+        }
+      }
     }
   }
 }
@@ -45,8 +129,13 @@
   height: calc(100vh - 180px);
   overflow-y: auto;
   overflow-x: visible;
+
+  @media screen and (max-width: 768px) {
+    height: calc(100vh - 280px);
+  }
 }
 
+.calendar-grid-week,
 .calendar-grid {
   &::after {
     width: 1px;
@@ -56,7 +145,18 @@
     top: 0;
     background: #ddd;
     height: calc(60px * 24);
+    z-index: 1;
+
   }
+
+  @media screen and (max-width: 768px) {
+
+    &::after,
+    &::before {
+      display: none;
+    }
+  }
+
   &::before {
     height: 1px;
     content: "";
@@ -65,6 +165,19 @@
     top: calc(60px * 24 - 1px);
     background: #ddd;
     width: 100px;
+    z-index: 1;
+  }
+}
+
+.calendar-grid-week {
+  height: calc(100vh - 280px);
+
+  @media screen and (max-width: 768px) {
+    height: calc(100vh - 345px);
+  }
+
+  &::before {
+    height: 2px;
   }
 }
 
@@ -75,10 +188,16 @@
 }
 
 .calendar-hours-column {
-  width: 110px;
+  width: 100px;
+
+  @media screen and (max-width: 768px) {
+    width: 60px;
+  }
+
   div.hour-inner {
     border: 0;
     background-color: #fff;
+    text-align: center;
   }
 }
 
@@ -99,11 +218,13 @@
 }
 
 .calendar-hour {
-  height: 60px; /* 1 hour */
+  height: 60px;
+  /* 1 hour */
 }
 
 .calendar-hour-week {
-  height: 60px; /* 1 hour */
+  height: 60px;
+  /* 1 hour */
 }
 
 .calendar-day-week {
@@ -129,6 +250,7 @@
   align-items: center;
   padding: 5px;
   gap: 2px;
+  overflow-y: auto;
 }
 
 .calendar-hour:nth-child(even),
@@ -157,10 +279,335 @@
   border-radius: 3px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 2;
+  cursor: pointer;
+  overflow: hidden;
+
+  @media screen and (max-width: 768px) {
+    padding: 3px;
+    font-size: 8px;
+  }
+
+  &:hover {
+    z-index: 3;
+  }
+
+  &.small-event-box:hover {
+    height: auto !important;
+  }
+}
+
+.more-details-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  display: flex;
+  scale: 2;
+  transition: 200ms ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+
+  &.open-modal {
+    scale: 1;
+    opacity: 1;
+    visibility: visible;
+    overflow-y: auto;
+  }
+
+  &.full-view {
+    .more-details-modal-content {
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+    }
+  }
+
+  .more-details-modal-content {
+    margin: auto;
+    width: 480px;
+    max-width: 100%;
+    height: 460px;
+    overflow-y: auto;
+    position: relative;
+    transition: 300ms ease-in-out;
+    border-radius: 4px;
+    box-shadow: 0px 8px 17px 0px rgba(23, 26, 31, 0.23),
+      0px 0px 2px 0px rgba(23, 26, 31, 0.2);
+    background: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
+
+    .more-details-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 13px 16px;
+      border-bottom: 1px solid rgb(222, 225, 230);
+
+      h2 {
+        color: rgb(83, 92, 232);
+        font-family: Outfit, sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 26px;
+      }
+
+      .more-details-modal-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        button {
+          width: 32px;
+          height: 32px;
+          border-radius: 16px;
+          background: rgb(243, 244, 246);
+          border: 0;
+          transition: 300ms ease-in-out;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+
+          &:hover {
+            background: rgb(230, 230, 230);
+          }
+
+          svg {
+            width: 16px;
+            height: 16px;
+          }
+        }
+      }
+    }
+
+    .more-details-modal-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      flex: 1;
+      overflow-y: auto;
+
+      .more-details-modal-body-right,
+      .more-details-modal-body-left {
+        padding: 16px;
+        border-right: 1px solid rgb(222, 225, 230);
+      }
+
+      ul {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        li {
+          display: flex;
+          align-items: baseline;
+          gap: 8px;
+
+          svg {
+            width: 16px;
+            height: 16px;
+            position: relative;
+            top: 2px;
+          }
+
+          .more-details-modal-block {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+
+            span {
+              color: rgb(110, 119, 135);
+              font-size: 14px;
+              font-weight: 400;
+              line-height: 24px;
+            }
+
+            strong {
+              color: rgb(23, 26, 31);
+              font-size: 16px;
+              font-weight: 700;
+              line-height: 26px;
+              text-transform: capitalize;
+            }
+
+            a {
+              color: rgb(55, 154, 230);
+              font-size: 14px;
+              font-weight: 400;
+              line-height: 22px;
+              text-decoration-line: underline;
+              border-radius: 4px;
+              padding: 4px 8px;
+              transition: 200ms ease-in-out;
+              position: relative;
+              left: -8px;
+
+              &:hover {
+                color: #fff;
+                background: rgb(55, 154, 230);
+              }
+            }
+
+            .badge-row {
+              display: flex;
+              gap: 8px;
+              align-items: center;
+
+              .badge {
+                color: rgb(254, 118, 62);
+                font-size: 11px;
+                font-weight: 400;
+                line-height: 18px;
+                border-radius: 12px;
+                background: rgb(255, 244, 240);
+                padding: 4px 8px;
+              }
+            }
+
+            .more-details-modal-user-block {
+              display: flex;
+              gap: 8px;
+              align-items: center;
+              border-radius: 18px;
+              background: #f8f9fa;
+              padding: 4px;
+              width: 140px;
+              cursor: pointer;
+              transition: 200ms ease-in-out;
+
+              &:hover {
+                background: rgb(83, 92, 232);
+
+                img {
+                  border: 2px solid #fff;
+                }
+
+                h4 {
+                  color: #fff;
+                }
+              }
+
+              &:active {
+                scale: 0.95;
+              }
+
+              img {
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+              }
+
+              h4 {
+                color: rgb(23, 26, 31);
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 22px;
+                transition: all 0.3s ease-in-out;
+                text-wrap: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+              }
+            }
+          }
+        }
+      }
+
+      .more-details-modal-body-right {
+        border: 0;
+      }
+    }
+
+    .more-details-modal-footer {
+      padding: 16px;
+      border-top: 1px solid rgb(222, 225, 230);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      button {
+        padding: 7px 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: 300ms ease-in-out,
+          translate 100ms cubic-bezier(0.4, 0, 1, 1);
+
+        &:active {
+          translate: 0px 1px;
+        }
+
+        svg {
+          width: 16px;
+          height: 16px;
+        }
+
+        &.edit-form-opener {
+          background: rgb(243, 244, 246);
+          border: 1px solid rgb(243, 244, 246);
+
+          span {
+            color: rgb(86, 94, 108);
+          }
+
+          &:hover {
+            background: rgb(255, 255, 255);
+
+            span {
+              color: rgb(83, 92, 232);
+            }
+
+            svg path {
+              stroke: rgb(83, 92, 232);
+            }
+          }
+        }
+
+        &.share-form-opener {
+          background: rgb(83, 92, 232);
+          border: 1px solid rgb(83, 92, 232);
+
+          &:hover {
+            background: rgb(255, 255, 255);
+
+            span {
+              color: rgb(83, 92, 232);
+            }
+
+            svg path {
+              stroke: rgb(83, 92, 232);
+            }
+          }
+
+          span {
+            color: white;
+          }
+        }
+
+        span {
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 22px;
+        }
+      }
+    }
+  }
 }
 
 .calendar-grid .calendar-event {
   left: 102px;
+
+  @media screen and (max-width: 768px) {
+   font-size: 100%;
+  }
 }
 
 .calendar-event-month {
@@ -170,14 +617,27 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 2;
   width: 100%;
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+
+  @media screen and (max-width: 768px) {
+    padding: 3px;
+    font-size: 8px;
+  }
+
+  &:hover {
+    opacity: 0.6;
+  }
 }
 
 .other-month {
   color: #aaa;
 }
+
 .calendar-grid .hour-inner {
   width: calc(100% - 100px);
   float: right;
+
   span {
     position: absolute;
     left: -100px;
@@ -200,16 +660,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
   &:hover {
     background: rgb(230, 230, 230);
   }
 }
+
 .today-navigation {
   padding: 6px;
   border-radius: 4px;
   background: rgb(241, 242, 253);
   color: rgb(83, 92, 232);
-  font-family: Lato, sans-serif;
+
   font-size: 12px;
   font-weight: 400;
   line-height: 20px;
@@ -219,18 +681,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
   &:hover {
     background: rgb(83, 92, 232);
     color: white;
   }
 }
+
 .link-navigations {
   display: flex;
   align-items: center;
+
   .link-navigation {
     padding: 6px 24px;
     border-radius: 4px;
-    font-family: Lato, sans-serif;
+
     font-size: 12px;
     font-weight: 400;
     line-height: 20px;
@@ -249,5 +714,485 @@
       background: rgb(83, 92, 232);
       border: 1px solid rgb(83, 92, 232);
     }
+  }
+}
+
+.share-modal {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 6px 6px 0px 0px;
+  box-shadow: 0px 17px 35px 0px rgba(32, 45, 225, 0.32),
+    0px 0px 2px 0px rgba(32, 45, 225, 0.2);
+  background: rgb(32, 45, 225);
+  width: 480px;
+  padding: 24px;
+  padding-bottom: 38px;
+  z-index: 3;
+  opacity: 0;
+  visibility: hidden;
+  transition: 100ms ease-in-out;
+  scale: 0.7;
+  transform-origin: left center;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+
+  &.open-share-modal {
+    opacity: 1;
+    visibility: visible;
+    scale: 1;
+  }
+
+  .share-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h2 {
+      color: rgb(255, 255, 255);
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 26px;
+    }
+
+    .share-modal-close {
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      transition: 300ms ease-in-out;
+
+      &:hover {
+        svg path {
+          stroke: rgb(83, 92, 232);
+        }
+      }
+    }
+  }
+
+  .share-modal-body {
+    .share-modal-body-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 25px;
+
+      .label-box {
+        background: rgb(255, 255, 255);
+        display: flex;
+        flex: 1;
+        gap: 8px;
+        border-radius: 4px;
+        overflow: hidden;
+        padding: 8px 11px;
+
+        input {
+          width: 100%;
+          border-radius: 4px;
+          border: 0;
+          background: transparent;
+          color: rgb(55, 154, 230);
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 22px;
+          text-decoration-line: underline;
+          outline: none;
+        }
+
+        button {
+          border: 0;
+          background: transparent;
+          cursor: pointer;
+          color: rgb(83, 92, 232);
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 22px;
+          padding: 0 11px;
+          transition: 300ms ease-in-out;
+          border-radius: 4px;
+
+          &:hover {
+            background: rgb(83, 92, 232);
+            color: white;
+          }
+        }
+      }
+
+      .share-button {
+        border-radius: 4px;
+        background: rgb(241, 242, 253);
+        padding: 7px 12px;
+        color: rgb(83, 92, 232);
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 22px;
+        cursor: pointer;
+        transition: 300ms ease-in-out;
+        border: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+
+        &:hover {
+          background: rgb(83, 92, 232);
+          color: white;
+
+          svg path {
+            stroke: white;
+          }
+        }
+
+        svg path {
+          stroke: rgb(83, 92, 232);
+          transition: 300ms ease-in-out;
+        }
+      }
+    }
+  }
+}
+
+.create-meeting-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  transition: 200ms ease-in-out scale, 100ms ease-in-out opacity;
+  opacity: 0;
+  visibility: hidden;
+  scale: 1.5;
+
+  &.create-meeting-modal-active {
+    opacity: 1;
+    visibility: visible;
+    scale: 1;
+  }
+
+  .create-meeting-modal-body {
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0px 8px 17px 0px rgba(23, 26, 31, 0.23),
+      0px 0px 2px 0px rgba(23, 26, 31, 0.2);
+    width: 480px;
+
+    .create-meeting-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+      border-bottom: 1px solid rgb(222, 225, 230);
+      margin-bottom: 16px;
+
+      h2 {
+        color: rgb(23, 26, 31);
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 26px;
+      }
+
+      button {
+        border: 0px;
+        width: 32px;
+        height: 32px;
+        border-radius: 16px;
+        background: rgb(243, 244, 246);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 300ms ease;
+
+        &:hover {
+          background-color: #aaa;
+        }
+      }
+    }
+
+    .creating-meeting-modal-body {
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgb(222, 225, 230);
+
+      .input-row {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        flex: 1;
+
+        span {
+          color: rgb(66, 73, 85);
+          font-size: 14px;
+          font-weight: 700;
+          line-height: 22px;
+        }
+
+        .input-form-item {
+          border-radius: 4px;
+          background: rgb(243, 244, 246);
+          border: 0;
+          padding: 7px 12px;
+          color: rgb(23, 26, 31);
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 22px;
+
+          &::placeholder {
+            color: rgb(188, 193, 202);
+          }
+        }
+      }
+
+      .form-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: space-between;
+      }
+
+      .times-row {
+        display: flex;
+        align-items: center;
+        border-radius: 4px;
+        background: rgb(243, 244, 246);
+        gap: 5px;
+        cursor: pointer;
+
+        &:has(.copy-icon) {
+          padding-right: 12px;
+        }
+
+        .input-form-item {
+          border: 0;
+          outline: none;
+          background-color: transparent;
+          cursor: pointer;
+          flex: 1;
+        }
+      }
+
+      .date-picker-modal-btn {
+        flex: 1;
+
+        button {
+          border-radius: 4px;
+          background: rgb(243, 244, 246);
+          border: 0;
+        }
+
+        input {
+          border-radius: 4px;
+          background: rgb(243, 244, 246);
+          border: 0;
+        }
+      }
+
+      .collabrators {
+        border-radius: 4px;
+        background: rgb(243, 244, 246);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        position: relative;
+        padding: 12px;
+        height: 45px;
+        gap: 50px;
+        overflow: hidden;
+        transition: 300ms ease-in-out;
+
+        .collabrator-item {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          cursor: pointer;
+
+          .collabrator-name {
+            color: rgb(23, 26, 31);
+            font-weight: 400;
+            line-height: 22px;
+            font-size: 12px;
+          }
+        }
+
+        &.collabrator-open {
+          height: 140px;
+          overflow-y: auto;
+          gap: 6px;
+
+          .arrow-select-custome {
+            transform: rotate(180deg);
+          }
+        }
+
+        .arrow-select-custome {
+          position: absolute;
+          top: 15px;
+          right: 13px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 0;
+          background: transparent;
+          cursor: pointer;
+          transition: 300ms ease-in-out;
+
+          &:hover {
+            svg path {
+              stroke: rgb(83, 92, 232);
+            }
+          }
+
+          svg {
+            width: 16px;
+            height: 16px;
+
+            path {
+              stroke: rgb(0, 0, 0);
+            }
+          }
+        }
+      }
+
+      .row-collabrators {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .collabrator-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          cursor: pointer;
+          border-radius: 18px;
+          background: rgb(248, 249, 250);
+          padding: 4px;
+          transition: 300ms ease;
+
+          &:hover {
+            background: rgb(83, 92, 232);
+
+            img {
+              border: 2px solid #fff;
+            }
+
+            .collabrator-name {
+              color: #fff;
+            }
+
+            .collabrator-close-btn {
+              background-color: rgb(255, 255, 255);
+
+              svg {
+                path {
+                  fill: rgb(83, 92, 232);
+                }
+              }
+            }
+          }
+
+          .collabrator-name {
+            color: rgb(23, 26, 31);
+            font-weight: 500;
+            line-height: 22px;
+            font-size: 12px;
+          }
+
+          .collabrator-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+          }
+
+          .collabrator-close-btn {
+            background: rgb(110, 119, 135);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+
+            svg {
+              path {
+                fill: white;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .create-meeting-modal-footer {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 20px;
+      padding: 20px 16px;
+
+      button {
+        border-radius: 4px;
+        padding: 7px 12px;
+        border: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: 300ms ease-in-out;
+        font-size: 14px;
+        line-height: 22px;
+        border: 1px solid rgb(243, 244, 246);
+
+        &:hover {
+          background: rgb(255, 255, 255);
+          color: rgb(83, 92, 232);
+          border-color: rgb(83, 92, 232);
+
+          svg {
+            path {
+              fill: rgb(83, 92, 232);
+            }
+          }
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+
+      .send-notify-meeting-btn {
+        background: rgb(243, 244, 246);
+        color: rgb(86, 94, 108);
+      }
+
+      .create-meeting-btn {
+        background: rgb(83, 92, 232);
+        color: rgb(255, 255, 255);
+      }
+    }
+  }
+}
+
+.error {
+  color: red !important;
+  background-color: #f9f2f4 !important;
+}
+
+@media screen and (max-width: 500px) {
+  .calendar {
+    padding: 0px;
+    width: auto;
+  }
+
+  .calendar-header-top {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
   }
 }

@@ -6,15 +6,15 @@ import { modals, routes } from "../utils/data";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { useModal } from "../redux/useSelector";
 import { useDispatch } from "react-redux";
-import {setModal}  from "../redux/modalSlice"
+import { setModal } from "../redux/modalSlice";
 
 const MainRoute = () => {
   const { pathname } = useLocation();
   const ModalData = modals.filter((f) => f.path === pathname);
   const [sideBar, setsideBar] = useState(false);
   const [bar, setBar] = useState(false);
-  const dispatch = useDispatch()
-  const modal = useModal()
+  const dispatch = useDispatch();
+  const modal = useModal();
 
   return (
     <>
@@ -54,7 +54,7 @@ const MainRoute = () => {
           </Routes>
         </div>
       </div>
-      <Modal/>
+      <Modal />
     </>
   );
 };

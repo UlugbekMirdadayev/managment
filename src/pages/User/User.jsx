@@ -1,64 +1,53 @@
-import React, {   useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./User.css";
 import { deleteRequest, getRequest } from "../../service/api";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import * as icon from "../../assets/svgs/index";
 import { useDispatch } from "react-redux";
 import { setLoader } from "../../redux/loaderSlice";
 import { updateUser } from "../../redux/updateSlice";
+import { useUser } from "../../redux/useSelector";
 
 const User = () => {
   const [users, setUsers] = useState([]);
-  let token = localStorage.getItem("token");
-  const dispatch = useDispatch()
+  const token = useUser().token;
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const getUsers = useCallback(
-    () => {
-      dispatch(setLoader(true))
-      getRequest("users", token)
-        .then(({ data }) => {
-          // setUsers(data.data.map((i)=>
-          // {
-          //   return {...i,arrow:false}
-          // }));
-        dispatch(setLoader(false))
-        console.log(data);
-        
-        
-          
-          toast.success("Ma`lumotlar keldi");
-        })
-        .catch((err) => {
-          console.error("Xaot:", err.message);
-          toast.error(err.message ? err.message : "Xatolik yuz berdi");
-          dispatch(setLoader(false))
-  
-        });
-    ;
-  },[token,dispatch])
-  useEffect(()=>{
-    if(users.length === 0){
-  getUsers()
+  const getUsers = useCallback(() => {
+    dispatch(setLoader(true));
+    getRequest("users", token)
+      .then(({ data }) => {
+        setUsers(
+          data.data.map((i) => {
+            return { ...i, arrow: false };
+          })
+        );
+        dispatch(setLoader(false));
+      })
+      .catch((err) => {
+        dispatch(setLoader(false));
+      });
+  }, [token, dispatch]);
+  useEffect(() => {
+    if (users.length === 0) {
+      getUsers();
     }
-},[users.length,getUsers])
+  }, [users.length, getUsers]);
   const Update = (item) => {
-    dispatch(updateUser(item))
+    dispatch(updateUser(item));
     navigate("/createUser");
   };
   const Delete = (id) => {
-     dispatch(setLoader(true))
+    dispatch(setLoader(true));
     deleteRequest("users/" + id, token)
       .then(({ data }) => {
         console.log(data);
-        toast.success("User o`chirildi");
-       dispatch(setLoader(false))
-       getUsers()
+        dispatch(setLoader(false));
+        getUsers();
       })
       .catch((Err) => {
         console.log("error", Err);
-        toast.error(Err.message ? Err.message : "Xatolik yuz berdi");
-       dispatch(setLoader(false))
+        dispatch(setLoader(false));
       });
   };
   const hanldeArrow = (item) => {
@@ -66,9 +55,7 @@ const User = () => {
     if (excite) {
       setUsers(
         users.map((x) => {
-          return x.id === excite.id
-            ? { ...excite, arrow: !excite.arrow }
-            : x;
+          return x.id === excite.id ? { ...excite, arrow: !excite.arrow } : x;
         })
       );
     }
@@ -114,36 +101,40 @@ const User = () => {
           <tbody>
             {users.map((item) => {
               return (
-                <tr className={`tr ${item.arrow ? "active-arrow-table":"tr"} `} key={item.id}>
+                <tr
+                  className={`tr ${item.arrow ? "active-arrow-table" : "tr"} `}
+                  key={item.id}
+                >
                   <tr>
                     <th>ID</th>
-                    <td>{item.id} 
+                    <td>
+                      {item.id}
 
-                    <button
-                      className="td-btn"
-                      onClick={() => hanldeArrow(item)}
-                    >
-                      {item.arrow ? <icon.ArrowUp2 /> : <icon.ArrowDown2 />}
-                    </button>
+                      <button
+                        className="td-btn"
+                        onClick={() => hanldeArrow(item)}
+                      >
+                        {item.arrow ? <icon.ArrowUp2 /> : <icon.ArrowDown2 />}
+                      </button>
                     </td>
                   </tr>
-                  <tr className={item.arrow ? "tr-active":"tr-td"}>
+                  <tr className={item.arrow ? "tr-active" : "tr-td"}>
                     <th>Имя</th>
                     <td>{item.name}</td>
                   </tr>
-                  <tr className={item.arrow ? "tr-active":"tr-td"}>
+                  <tr className={item.arrow ? "tr-active" : "tr-td"}>
                     <th>Телеграм</th>
                     <td>{item.telegram}</td>
                   </tr>
-                  <tr className={item.arrow ? "tr-active":"tr-td"}>
+                  <tr className={item.arrow ? "tr-active" : "tr-td"}>
                     <th>Email</th>
                     <td>{item.email}</td>
                   </tr>
-                  <tr className={item.arrow ? "tr-active":"tr-td"}>
+                  <tr className={item.arrow ? "tr-active" : "tr-td"}>
                     <th>Role</th>
                     <td>{item.role}</td>
                   </tr>
-                  <tr className={item.arrow ? "tr-active":"tr-td"}>
+                  <tr className={item.arrow ? "tr-active" : "tr-td"}>
                     <th>кнопка</th>
                     <td>
                       <button className="update" onClick={() => Update(item)}>

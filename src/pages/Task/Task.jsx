@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import * as icon from "../../assets/svgs/index";
 import "./Task.css";
 import { getRequest } from "../../service/api";
-import { toast } from "react-toastify";
 import { useTask } from "../../redux/useSelector";
 import { useDispatch } from "react-redux";
 import { setTask } from "../../redux/taskSlice";
@@ -43,14 +42,12 @@ const Task = () => {
     dispatch(setLoader(true));
     getRequest("tasks", token)
       .then(({ data }) => {
-        toast.success("Задачи пришол");
         dispatch(setTask(data.data));
         dispatch(setLoader(false));
         console.log(data);
       })
       .catch((err) => {
         console.log(err);
-        toast.error(err.message ? err.message : "Xatlik yuz berdi");
         dispatch(setLoader(false));
       });
   }, [token, dispatch]);

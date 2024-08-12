@@ -8,7 +8,7 @@
   align-items: center;
 }
 .ticket-container nav ul li {
-  font-family: Lato, sans-serif;
+  
   font-size: 14px;
   font-weight: 400;
   line-height: 22px;
@@ -77,7 +77,7 @@
 }
 
 .ticket-container table tbody tr td {
-  font-family: Lato, sans-serif;
+  
   font-size: 14px;
   font-weight: 400;
   line-height: 22px;
@@ -97,7 +97,7 @@
 .ticket-container table tbody tr .status button {
   width: 60px;
   height: 24px;
-  font-family: Lato, sans-serif;
+  
   font-size: 11px;
   font-weight: 400;
   line-height: 18px;

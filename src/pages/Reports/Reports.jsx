@@ -3,7 +3,6 @@ import * as icon from "../../assets/svgs/index";
 import Send from "../../assets/images/send.png";
 import "./Report.css";
 import { getRequest } from "../../service/api";
-import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setReport } from "../../redux/reportSlice";
 import { useReport } from "../../redux/useSelector";
@@ -36,14 +35,12 @@ const Reports = () => {
     dispatch(setLoader(true))
     getRequest("reports", token)
       .then((reponsive) => {
-        toast.success("Отчеты пришол");
         dispatch(setReport(reponsive.data.data))
         dispatch(setLoader(false))
         console.log(reponsive.data.data);
       })
       .catch((error) => {
         console.error("Xato", error);
-        toast.error(error.message ? error.message : "Xatolik yuz berdi");
         dispatch(setLoader(false))
       });
   }, [token,dispatch]);
