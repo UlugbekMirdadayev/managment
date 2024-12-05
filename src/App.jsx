@@ -7,10 +7,14 @@ import { useLocation } from "react-router-dom";
 
 const App = () => {
   let loader = useLoader();
-  const {pathname} = useLocation()
+  const { pathname } = useLocation();
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
-      <div className={`loader-container ${pathname !== "/login" ? loader ? "active-loader" : "":""}`}>
+      <div
+        className={`loader-container ${
+          pathname !== "/login" ? (loader ? "active-loader" : "") : ""
+        }`}
+      >
         <div className="loader"></div>
       </div>
       <Router />

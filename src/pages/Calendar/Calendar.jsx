@@ -386,7 +386,7 @@ const CalendarUI = () => {
             >
               <span>{day.getDate()}</span>
               {getEventsForCurrentMonth()
-                .filter(
+                ?.filter(
                   (event) =>
                     new Date(event.start).getDate() === day.getDate() &&
                     new Date(event.start).getMonth() === day.getMonth()

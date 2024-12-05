@@ -38,7 +38,6 @@ export const extraListHead = [
   },
 ];
 
-
 export const modals = [
   { path: "/task", component: TaskForm },
   { path: "/reports", component: ReportForm },
@@ -150,7 +149,4 @@ export const BASE_URL = `https://calendar-api.remzilab.com/api/`;
 export const deletePlus = ["/ticket", "/createUser", "/users"];
 export const status_users = ["general_director", "owner"];
 
-
-export const created_by = [
-  "Support","Manager","Owener","Director",
-]
+export const created_by = ["Support", "Manager", "Owener", "Director"];

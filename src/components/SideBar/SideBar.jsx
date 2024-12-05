@@ -21,31 +21,30 @@ const SideBar = ({ deleted, sideBar, setsideBar, bar, setBar }) => {
   return (
     <>
       <div className={`sidebar ${sideBar ? "active-sidebar" : ""}`}>
-   
         <ul className="firstUl">
-        <div className="sidebar-head">
-          <div
-            className={`bars ${bar ? "bar-active" : ""}`}
-            onClick={() => {
-              setBar(false);
-              setsideBar(false);
-            }}
-          >
-            <div className="bar  line1"></div>
-            <div className="bar line2"></div>
-            <div className="bar line3"></div>
+          <div className="sidebar-head">
+            <div
+              className={`bars ${bar ? "bar-active" : ""}`}
+              onClick={() => {
+                setBar(false);
+                setsideBar(false);
+              }}
+            >
+              <div className="bar  line1"></div>
+              <div className="bar line2"></div>
+              <div className="bar line3"></div>
+            </div>
+            <div className="sidebar-user">
+              <h3>
+                {userStorage?.user?.name} <br />
+                <span>{userStorage?.user?.roles[0]?.name}</span>
+              </h3>
+              <img
+                src={userStorage?.user?.image ? userStorage?.user?.img : User}
+                alt=""
+              />
+            </div>
           </div>
-          <div className="sidebar-user">
-            <h3>
-              {userStorage?.user?.name} <br />
-              <span>{userStorage?.user?.roles[0]?.name}</span>
-            </h3>
-            <img
-              src={userStorage?.user?.image ? userStorage?.user?.img : User}
-              alt=""
-            />
-          </div>
-        </div>
           {listHaed.map((item, index) => {
             return (
               <li
@@ -59,7 +58,6 @@ const SideBar = ({ deleted, sideBar, setsideBar, bar, setBar }) => {
               >
                 <item.icon
                   color={pathname === item.path ? "white" : "#565E6C"}
-                  
                 />
                 {item.title}
               </li>
@@ -98,7 +96,7 @@ const SideBar = ({ deleted, sideBar, setsideBar, bar, setBar }) => {
             </ul>
           </li>
         </ul>
-        <ul >
+        <ul>
           <li className="li">
             <icon.Icon1 /> <button>Бизнес аналитик</button>
           </li>
@@ -108,10 +106,13 @@ const SideBar = ({ deleted, sideBar, setsideBar, bar, setBar }) => {
           <li className="li">
             <icon.Icon3 /> <button>Тех.хаб</button>
           </li>
-          <li onClick={() => {
-            LogOut()
-            navigate("/")
-          }} className="li logOutLi">
+          <li
+            onClick={() => {
+              LogOut();
+              navigate("/");
+            }}
+            className="li logOutLi"
+          >
             <NavLink style={{ color: "#565E6C" }} to={"/"}>
               Выход
             </NavLink>

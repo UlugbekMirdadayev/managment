@@ -109,7 +109,7 @@ const ReportForm = () => {
     }
   };
   useEffect(() => {
-    if (user.user.name.includes("Support")) {
+    if (user?.user?.name?.includes("Support")) {
       console.log("none");
     } else {
       console.log("block");
@@ -222,7 +222,7 @@ const ReportForm = () => {
           <div
             className="input-name"
             style={{
-              display: user.user.name.includes("Support") ? "none" : "block",
+              display: user?.user?.name?.includes("Support") ? "none" : "block",
             }}
           >
             <label
